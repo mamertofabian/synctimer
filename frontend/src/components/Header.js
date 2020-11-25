@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 const Header = () => {
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <Navbar.Brand href="/">SharedTimer</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
