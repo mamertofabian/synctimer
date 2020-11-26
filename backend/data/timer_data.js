@@ -1,53 +1,55 @@
-export const timerSet = {
+const timerSet = {
   name: "Midweek Meeting",
   desc: "Week of Nov 23-29",
-  timeBudget: 6300, // 1.75 hours in seconds
+  timeBudget: 105, // 1.75 hours in minutes
   key: "d9a36958",
   owner: "Jun",
   timers: [
     {
       name: "Opening comments",
-      duration: 60,
+      duration: 1,
     },
     {
       name: "Treasures from God's Word",
-      duration: 600,
+      duration: 10,
     },
     {
       name: "Digging for Spiritual Gems",
-      duration: 600,
+      duration: 10,
     },
     {
       name: "Bible Reading",
-      duration: 240,
+      duration: 4,
     },
     {
       name: "Initial Call",
-      duration: 180,
+      duration: 3,
     },
     {
       name: "Return Visit",
-      duration: 240,
+      duration: 4,
     },
     {
       name: "Bible Study",
-      duration: 300,
+      duration: 5,
     },
     {
       name: "Living as Christians",
-      duration: 300,
+      duration: 5,
     },
     {
       name: "Local Needs",
-      duration: 600,
+      duration: 10,
     },
     {
       name: "Congregation Bible Study",
-      duration: 1800,
+      duration: 30,
     },
     {
       name: "Concluding Comments",
-      duration: 180,
+      duration: 3,
     },
   ],
 };
+
+module.exports = timerSet;
