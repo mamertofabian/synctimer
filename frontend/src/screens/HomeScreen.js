@@ -8,16 +8,18 @@ const HomeScreen = () => {
   const [timerSet, setTimerSet] = useState({
     timers: [],
   });
+  // TODO: get from query params or from a list of timersets (admin dashboard)
+  // eslint-disable-next-line no-unused-vars
+  const [key, setKey] = useState("d9a36958");
 
   useEffect(() => {
     const fetchTimers = async () => {
-      const { data } = await axios.get("/api/timers");
-
+      const { data } = await axios.get(`/api/v1/timerset/${key}`);
       setTimerSet(data);
     };
 
     fetchTimers();
-  }, []);
+  }, [key]);
 
   return (
     <div>
