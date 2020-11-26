@@ -52,4 +52,4 @@ const timerSet = {
   ],
 };
 
-module.exports = timerSet;
+export default timerSet;
