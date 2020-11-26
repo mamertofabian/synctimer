@@ -11,6 +11,7 @@ import colors from "colors";
 import connectDB from "./config/db.js";
 
 import timerSetRoutes from "./routes/timerSetRouter.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -48,6 +49,9 @@ app.use(hpp());
 // app.use(cors());
 
 app.use("/api/v1/timerset", timerSetRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

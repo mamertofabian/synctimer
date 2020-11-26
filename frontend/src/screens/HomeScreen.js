@@ -15,7 +15,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchTimers = async () => {
       const { data } = await axios.get(`/api/v1/timerset/${key}`);
-      setTimerSet(data);
+      setTimerSet(data.data);
     };
 
     fetchTimers();

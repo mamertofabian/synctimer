@@ -3,5 +3,5 @@ GET
 
 ###
 
-http://localhost:5000/api/v1/timerset
+http://localhost:5000/api/v1/timerset/d9a36958
 GET
