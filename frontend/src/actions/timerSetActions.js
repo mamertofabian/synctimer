@@ -5,6 +5,7 @@ import {
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
 } from "../constants/timerSetConstants";
+import { BASE_API_URL } from "../constants/commonConstants";
 
 export const getTimerSet = (key) => async (dispatch) => {
   dispatch({
@@ -12,7 +13,7 @@ export const getTimerSet = (key) => async (dispatch) => {
   });
 
   try {
-    const { data } = await axios.get(`/api/v1/timerset/${key}`);
+    const { data } = await axios.get(`${BASE_API_URL}/timerset/${key}`);
 
     if (data.success === true) {
       dispatch({
