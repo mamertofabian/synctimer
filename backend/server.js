@@ -10,7 +10,7 @@ import rateLimit from "express-rate-limit";
 import colors from "colors";
 import connectDB from "./config/db.js";
 
-import timerSetRoutes from "./routes/timerSetRouter.js";
+import timerSetRoutes from "./routes/timerSetRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
