@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 
 import sendEmail from "../utils/sendEmail.js";
-import User from "../models/UserModel.js";
+import User from "../models/userModel.js";
 import RefreshToken from "../models/refreshTokenModel.js";
 
 // @desc      Register user
@@ -112,7 +112,7 @@ export const token = asyncHandler(async (req, res, next) => {
 // @desc      Get current logged in user
 // @route     GET /api/v1/auth/me
 // @access    Private
-export const getMe = asyncHandler(async (req, res, next) => {
+export const getUserProfile = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
   res.status(200).json({
