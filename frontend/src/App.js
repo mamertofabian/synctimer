@@ -5,6 +5,7 @@ import "./App.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Container>
           <h1>Welcome to SharedTimer</h1>
           <Route path="/" component={HomeScreen} exact />
+          <Route path="/login" component={LoginScreen} />
         </Container>
       </main>
       <Footer />

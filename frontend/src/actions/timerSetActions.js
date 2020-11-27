@@ -31,7 +31,7 @@ export const getTimerSet = (key) => async (dispatch) => {
       type: GET_TIMERSET_FAIL,
       payload:
         error.response && error.response.data
-          ? error.response.data.error
+          ? error.response.data.message
           : error.message,
     });
   }

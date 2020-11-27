@@ -3,10 +3,17 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducer from "./reducer";
+import { appStorageGet } from "./Utils/Utils";
 
 const middleware = [thunk];
 
-const initialState = {};
+const userInfo = appStorageGet("userInfo");
+
+const initialState = {
+  userLogin: {
+    userInfo,
+  },
+};
 
 const store = createStore(
   reducer,
