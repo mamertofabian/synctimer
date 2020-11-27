@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+// import { LinkContainer } from "react-router-bootstrap";
 
 import { login, registerReset } from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
@@ -18,7 +18,7 @@ const LoginScreen = ({ history, location }) => {
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { result: passwordResetResult } = userResetPassword;
 
-  const searchParams = new URLSearchParams(location.search);
+  // const searchParams = new URLSearchParams(location.search);
   // const redirect = searchParams.get("redirect");
 
   useEffect(() => {
@@ -43,10 +43,10 @@ const LoginScreen = ({ history, location }) => {
     passwordSignIn: yup.string().required("Password is required"),
   });
 
-  const forgotPasswordHandler = (e) => {
-    e.preventDefault();
-    history.push("/forgotpassword");
-  };
+  // const forgotPasswordHandler = (e) => {
+  //   e.preventDefault();
+  //   history.push("/forgotpassword");
+  // };
 
   const signinHandler = async (email, password) => {
     dispatch(login(email, password));

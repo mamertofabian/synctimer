@@ -9,6 +9,8 @@ const timerSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  started: Date,
+  ended: Date,
 });
 
 export default timerSchema;

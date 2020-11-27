@@ -30,6 +30,7 @@ const timerSetSchema = mongoose.Schema(
       type: Date,
     },
     active: Boolean,
+    activeTimerId: String,
     timers: [timerSchema],
   },
   {
