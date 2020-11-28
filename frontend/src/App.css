@@ -43,6 +43,12 @@
   justify-content: space-between;
 }
 
-.hidden {
+header,
+main,
+footer {
   display: none;
+}
+
+.show {
+  display: block;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ms from "ms";
@@ -8,8 +8,6 @@ const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  const activeTimerState = useSelector((state) => state.activeTimerState);
-  const { activeTimer } = activeTimerState;
 
   const finished = t.started && t.ended;
   const actualDuration = finished
@@ -21,12 +19,6 @@ const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
       ? { color: "lightgreen" }
       : { color: "red" }
     : {};
-
-  useEffect(() => {
-    if (activeTimer) {
-      history.push("/timer");
-    }
-  }, [activeTimer, history]);
 
   return (
     <ListGroup.Item as="li" className="timer-li">
@@ -47,7 +39,10 @@ const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
           <Button
             className="ml-3"
             disabled={activeTimerId}
-            onClick={() => dispatch(startTimer(timerSetKey, t._id))}
+            onClick={() => {
+              dispatch(startTimer(timerSetKey, t._id));
+              history.push("/timer");
+            }}
           >
             Start
           </Button>

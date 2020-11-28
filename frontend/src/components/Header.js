@@ -26,7 +26,7 @@ const Header = () => {
   }, [history, userInfo]);
 
   return (
-    <header className={activeTimer ? "hidden" : ""}>
+    <header className={!activeTimer ? "show" : ""}>
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <Navbar.Brand href="/">SharedTimer</Navbar.Brand>

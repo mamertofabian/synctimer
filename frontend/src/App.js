@@ -17,7 +17,7 @@ const App = () => {
     <Router>
       <div>
         <Header />
-        <main className={`py-3${activeTimer ? " hidden" : ""}`}>
+        <main className={`py-3${!activeTimer ? " show" : ""}`}>
           <Container>
             <h1>Welcome to SharedTimer</h1>
             <Route path="/" component={HomeScreen} exact />

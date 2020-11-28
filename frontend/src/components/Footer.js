@@ -6,7 +6,7 @@ const Footer = () => {
   const { activeTimer } = activeTimerState;
 
   return (
-    <footer className={activeTimer ? "hidden" : ""}>
+    <footer className={!activeTimer ? "show" : ""}>
       <Container>
         <Row>
           <Col className="text-center py-3">Copyright &copy; SharedTimer</Col>
