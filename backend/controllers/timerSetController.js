@@ -91,4 +91,29 @@ const stopTimer = asyncHandler(async (req, res) => {
   }
 });
 
-export { getTimerSet, startTimer, stopTimer };
+// @desc      Reset all timers
+// @route     POST /api/v1/timerset/reset/:key
+// @access    Private
+const resetAllTimers = asyncHandler(async (req, res) => {
+  const timerSet = await TimerSet.findOne({ key: req.params.key }).lean();
+
+  if (timerSet) {
+    for (let index = 0; index < timerSet.timers.length; index++) {
+      const timer = timerSet.timers[index];
+      timer.started = undefined;
+      timer.ended = undefined;
+    }
+    timerSet.activeTimerId = undefined;
+    await TimerSet.updateOne({ key: timerSet.key }, timerSet);
+
+    res.json({
+      success: true,
+      data: timerSet,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Invalid timerset key");
+  }
+});
+
+export { getTimerSet, startTimer, stopTimer, resetAllTimers };

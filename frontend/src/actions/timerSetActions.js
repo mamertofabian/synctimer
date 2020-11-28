@@ -4,6 +4,9 @@ import {
   GET_TIMERSET_FAIL,
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
+  RESET_TIMERSET_FAIL,
+  RESET_TIMERSET_REQUEST,
+  RESET_TIMERSET_SUCCESS,
   START_TIMER_FAIL,
   START_TIMER_REQUEST,
   START_TIMER_SUCCESS,
@@ -35,6 +38,53 @@ export const getTimerSet = (key) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const resetTimerSet = (key) => async (dispatch, getState) => {
+  const { userLogin, timerSetState } = getState();
+
+  dispatch({
+    type: RESET_TIMERSET_REQUEST,
+  });
+
+  const authorization =
+    userLogin.userInfo && userLogin.userInfo.token
+      ? `Bearer ${userLogin.userInfo.token}`
+      : "";
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authorization,
+    },
+  };
+
+  try {
+    const { data } = await axios.post(
+      `${BASE_API_URL}/timerset/reset/${key}`,
+      null,
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: RESET_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+    } else {
+      dispatch({
+        type: RESET_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: RESET_TIMERSET_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message

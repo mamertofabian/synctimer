@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ListGroup } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 
 import Timer from "../components/Timer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getTimerSet } from "../actions/timerSetActions";
+import { getTimerSet, resetTimerSet } from "../actions/timerSetActions";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -41,6 +41,15 @@ const HomeScreen = () => {
           );
         })}
       </ListGroup>
+      <div className="d-flex justify-content-center">
+        <Button
+          variant="danger"
+          className="mt-3"
+          onClick={() => dispatch(resetTimerSet(timerSet.key))}
+        >
+          Reset
+        </Button>
+      </div>
     </div>
   ) : (
     <div></div>

@@ -16,6 +16,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzBiNTU0Y
 
 ###
 
+POST http://localhost:5000/api/v1/timerset/reset/d9a36958
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzBiNTU0YzYzMzAxNTFhNjU5Y2U1MCIsImlhdCI6MTYwNjQ2NTM3MSwiZXhwIjoxNjA2NTUxNzcxfQ.SYhDYTohaxzpdjsIfdMRtDSgKmHzgiaEt9Nk_FdNvN0
+
+###
+
 POST http://localhost:5000/api/v1/auth/login
 Content-Type: application/json
 

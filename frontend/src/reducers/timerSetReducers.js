@@ -2,6 +2,9 @@ import {
   GET_TIMERSET_FAIL,
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
+  RESET_TIMERSET_FAIL,
+  RESET_TIMERSET_REQUEST,
+  RESET_TIMERSET_SUCCESS,
   START_TIMER_FAIL,
   START_TIMER_REQUEST,
   START_TIMER_SUCCESS,
@@ -66,6 +69,18 @@ export const getTimerSetReducer = (state = {}, action) => {
         stopping: false,
         error: action.payload,
         timerSet: { ...state.timerSet },
+      };
+    case RESET_TIMERSET_REQUEST:
+      return { loading: true };
+    case RESET_TIMERSET_SUCCESS:
+      return {
+        loading: false,
+        timerSet: action.payload,
+      };
+    case RESET_TIMERSET_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;
