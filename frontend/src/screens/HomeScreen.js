@@ -1,24 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, ListGroup } from "react-bootstrap";
+import { Button, Form, ListGroup } from "react-bootstrap";
+import * as yup from "yup";
 
 import Timer from "../components/Timer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { getTimerSet, resetTimerSet } from "../actions/timerSetActions";
+import FormContainer from "../components/FormContainer";
+import { useFormik } from "formik";
 
-const HomeScreen = ({ history }) => {
+const HomeScreen = ({ history, location }) => {
   const dispatch = useDispatch();
   const timerSetState = useSelector((state) => state.timerSetState);
   const { timerSet, loading, error } = timerSetState;
+  const activeTimerState = useSelector((state) => state.activeTimerState);
+  const { activeTimer } = activeTimerState;
+
+  const searchParams = new URLSearchParams(location.search);
+  const keyParams = searchParams.get("key");
 
   // TODO: get from query params or from a list of timersets (admin dashboard)
   // eslint-disable-next-line no-unused-vars
-  const [key, setKey] = useState("d9a36958");
+  const [key, setKey] = useState(keyParams);
 
   useEffect(() => {
-    dispatch(getTimerSet(key));
+    if (key) {
+      dispatch(getTimerSet(key));
+    }
   }, [dispatch, key]);
+
+  // useEffect(() => {
+  //   if (activeTimer && timerSet && timerSet.activeTimerId) {
+  //     history.push(`/timer?key=${key}`);
+  //   } else {
+  //     history.push(`/?key=${key}`);
+  //   }
+  // }, [activeTimer, history, key, timerSet]);
+
+  const schemaTimerKey = yup.object({
+    timerKey: yup.string().required("Timer key is required"),
+  });
+
+  const siFormik = useFormik({
+    initialValues: { timerKey: "" },
+    validationSchema: schemaTimerKey,
+    onSubmit: (values) => submitHandler(values.timerKey),
+  });
+
+  const submitHandler = (timerKey) => {
+    window.location.assign(`/?key=${timerKey}`);
+  };
 
   return loading ? (
     <Loader />
@@ -65,7 +97,36 @@ const HomeScreen = ({ history }) => {
       </div>
     </div>
   ) : (
-    <div></div>
+    <div>
+      <FormContainer>
+        <Form noValidate onSubmit={siFormik.handleSubmit}>
+          <Form.Group controlId="timerKey">
+            <Form.Label>Please enter the timer key below:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Timer Key"
+              name="timerKey"
+              isInvalid={siFormik.touched.timerKey && siFormik.errors.timerKey}
+              // isValid={siFormik.touched.emailSignIn && !siFormik.errors.emailSignIn}
+              onChange={siFormik.handleChange}
+              onBlur={siFormik.handleBlur}
+              value={siFormik.values.timerKey}
+            />
+            <Form.Control.Feedback type="invalid">
+              {siFormik.errors.timerKey}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Button
+            variant="primary"
+            type="submit"
+            className="mr-3"
+            disabled={loading}
+          >
+            Submit
+          </Button>
+        </Form>
+      </FormContainer>
+    </div>
   );
 };
 

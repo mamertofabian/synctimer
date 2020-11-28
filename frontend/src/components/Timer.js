@@ -11,9 +11,17 @@ const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
 
   const finished = t.started && t.ended;
   const actualDuration = finished
-    ? new Date(t.ended).getTime() - new Date(t.started).getTime()
+    ? t.duration * 1000 * 60 -
+      (new Date(t.ended).getTime() - new Date(t.started).getTime())
     : null;
-  const formattedDuration = finished ? ms(actualDuration) : null;
+  let timeString;
+  if (finished) {
+    const date = new Date(0);
+    date.setMilliseconds(actualDuration);
+    timeString = date.toISOString().substr(11, 8);
+    // .replace(/^[0:]+/, "");
+  }
+  const formattedDuration = finished ? timeString : null;
   const actualDurationStyle = finished
     ? actualDuration <= ms(`${t.duration}m`)
       ? { color: "lightgreen" }
@@ -41,7 +49,7 @@ const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
             disabled={activeTimerId}
             onClick={() => {
               dispatch(startTimer(timerSetKey, t._id));
-              history.push("/timer");
+              history.push(`/timer?key=${timerSetKey}`);
             }}
           >
             Start
