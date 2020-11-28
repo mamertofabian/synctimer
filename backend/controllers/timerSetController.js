@@ -25,6 +25,11 @@ const startTimer = asyncHandler(async (req, res) => {
   const timerSet = await TimerSet.findOne({ key: req.params.key }).lean();
 
   if (timerSet) {
+    if (timerSet.activeTimerId) {
+      res.status(403);
+      throw new Error("Cannot start when another time is active");
+    }
+
     const timer = timerSet.timers.find(
       (t) => t._id.toString() === req.params.id
     );
@@ -39,7 +44,7 @@ const startTimer = asyncHandler(async (req, res) => {
 
       res.json({
         success: true,
-        data: timerSet,
+        data: timer,
       });
     } else {
       res.status(404);
@@ -63,12 +68,18 @@ const stopTimer = asyncHandler(async (req, res) => {
     );
 
     if (timer) {
+      if (timer.ended) {
+        res.status(403);
+        throw new Error("Timer already ended");
+      }
+
       timer.ended = Date.now();
+      timerSet.activeTimerId = undefined;
       await TimerSet.updateOne({ key: timerSet.key }, timerSet);
 
       res.json({
         success: true,
-        data: timerSet,
+        data: timer,
       });
     } else {
       res.status(404);

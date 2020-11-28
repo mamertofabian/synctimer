@@ -31,7 +31,14 @@ const HomeScreen = () => {
       </h4>
       <ListGroup as="ul">
         {timerSet.timers.map((t, index) => {
-          return <Timer t={t} key={index} />;
+          return (
+            <Timer
+              timerSetKey={key}
+              t={t}
+              key={index}
+              activeTimerId={timerSet.activeTimerId}
+            />
+          );
         })}
       </ListGroup>
     </div>
