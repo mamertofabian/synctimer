@@ -10,6 +10,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const activeTimerState = useSelector((state) => state.activeTimerState);
+  const { activeTimer } = activeTimerState;
 
   const history = useHistory();
 
@@ -24,7 +26,7 @@ const Header = () => {
   }, [history, userInfo]);
 
   return (
-    <header>
+    <header className={activeTimer ? "hidden" : ""}>
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <Navbar.Brand href="/">SharedTimer</Navbar.Brand>

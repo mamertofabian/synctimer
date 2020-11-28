@@ -2,26 +2,34 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Countdown, { zeroPad } from "react-countdown";
 import { Button } from "react-bootstrap";
-import { startTimer, stopTimer } from "../actions/timerSetActions";
+import { stopTimer } from "../actions/timerSetActions";
 
-const ActiveTimer = ({ timerSetKey, activeTimerId }) => {
+const ActiveTimerScreen = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const activeTimerState = useSelector((state) => state.activeTimerState);
   const { activeTimer } = activeTimerState;
+  const timerSetState = useSelector((state) => state.timerSetState);
+  const { timerSet } = timerSetState;
 
-  const renderer = ({ hours, minutes, seconds, completed }) => {
-    return (
-      <span>
-        {completed ? "-" : ""}
+  const renderer = ({ minutes, seconds, completed }) => {
+    return completed ? (
+      <h1 style={{ color: "red" }} className="display-1">
+        -{zeroPad(minutes)}:{zeroPad(seconds)}
+      </h1>
+    ) : (
+      <h1 className="display-1">
         {zeroPad(minutes)}:{zeroPad(seconds)}
-      </span>
+      </h1>
     );
   };
 
   return (
-    <div>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "100vh" }}
+    >
       <Countdown
         date={
           new Date(activeTimer.started).getTime() +
@@ -35,7 +43,7 @@ const ActiveTimer = ({ timerSetKey, activeTimerId }) => {
           <Button
             variant="warning"
             disabled={activeTimer.ended || !activeTimer.started}
-            onClick={() => dispatch(stopTimer(timerSetKey, activeTimer._id))}
+            onClick={() => dispatch(stopTimer(timerSet.key, activeTimer._id))}
           >
             Stop
           </Button>
@@ -45,4 +53,4 @@ const ActiveTimer = ({ timerSetKey, activeTimerId }) => {
   );
 };
 
-export default ActiveTimer;
+export default ActiveTimerScreen;
