@@ -23,7 +23,9 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
   return (
     <ListGroup.Item as="li" className="timer-li">
       <div>
-        <span>{t.name}</span>
+        <span>
+          <strong>{t.name}</strong>
+        </span>
         <span> | {t.duration}m</span>
         {finished && (
           <span>

@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import {
+  ACTIVATE_TIMER,
+  DEACTIVATE_TIMER,
   GET_TIMERSET_FAIL,
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
@@ -29,6 +31,15 @@ export const getTimerSet = (key) => async (dispatch) => {
         type: GET_TIMERSET_SUCCESS,
         payload: data.data,
       });
+
+      if (data.data.activeTimerId) {
+        const activeTimer = data.data.timers.find(
+          (t) => t._id === data.data.activeTimerId
+        );
+        if (activeTimer) {
+          dispatch(activateTimer(activeTimer));
+        }
+      }
     } else {
       dispatch({
         type: GET_TIMERSET_FAIL,
@@ -47,7 +58,7 @@ export const getTimerSet = (key) => async (dispatch) => {
 };
 
 export const resetTimerSet = (key) => async (dispatch, getState) => {
-  const { userLogin, timerSetState } = getState();
+  const { userLogin } = getState();
 
   dispatch({
     type: RESET_TIMERSET_REQUEST,
@@ -76,6 +87,7 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
         type: RESET_TIMERSET_SUCCESS,
         payload: data.data,
       });
+      dispatch(deactivateTimer());
     } else {
       dispatch({
         type: RESET_TIMERSET_FAIL,
@@ -123,6 +135,7 @@ export const startTimer = (key, timerId) => async (dispatch, getState) => {
         type: START_TIMER_SUCCESS,
         payload: data.data,
       });
+      dispatch(activateTimer(data.data));
     } else {
       dispatch({
         type: START_TIMER_FAIL,
@@ -170,6 +183,7 @@ export const stopTimer = (key, timerId) => async (dispatch, getState) => {
         type: STOP_TIMER_SUCCESS,
         payload: data.data,
       });
+      dispatch(deactivateTimer());
     } else {
       dispatch({
         type: STOP_TIMER_FAIL,
@@ -185,4 +199,17 @@ export const stopTimer = (key, timerId) => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const activateTimer = (timer) => {
+  return {
+    type: ACTIVATE_TIMER,
+    payload: timer,
+  };
+};
+
+export const deactivateTimer = () => {
+  return {
+    type: DEACTIVATE_TIMER,
+  };
 };

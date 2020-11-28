@@ -1,4 +1,6 @@
 import {
+  ACTIVATE_TIMER,
+  DEACTIVATE_TIMER,
   GET_TIMERSET_FAIL,
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
@@ -81,6 +83,21 @@ export const getTimerSetReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const activeTimerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ACTIVATE_TIMER:
+      return {
+        activeTimer: action.payload,
+      };
+    case DEACTIVATE_TIMER:
+      return {
+        activeTimer: undefined,
       };
     default:
       return state;
