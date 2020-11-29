@@ -1,6 +1,6 @@
 import axios from "axios";
 import { appStorageRemove, appStorageSet } from "../Utils/Utils";
-import { BASE_API_URL } from "../constants/commonConstants";
+// import { BASE_API_URL } from "../constants/commonConstants";
 import {
   USER_FORGOT_PASSWORD_FAIL,
   USER_FORGOT_PASSWORD_REQUEST,
@@ -34,7 +34,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `${BASE_API_URL}/auth/login`,
+      `/api/v1/auth/login`,
       { email, password },
       config
     );
@@ -94,7 +94,7 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `${BASE_API_URL}/auth/register`,
+      `/api/v1/auth/register`,
       { name, email, password },
       config
     );
@@ -152,7 +152,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `${BASE_API_URL}/auth/forgotpassword`,
+      `/api/v1/auth/forgotpassword`,
       { email },
       config
     );
@@ -198,7 +198,7 @@ export const resetPassword = (resetToken, password) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `${BASE_API_URL}/auth/resetpassword/${resetToken}`,
+      `/api/v1/auth/resetpassword/${resetToken}`,
       { password },
       config
     );

@@ -16,7 +16,7 @@ import {
   STOP_TIMER_REQUEST,
   STOP_TIMER_SUCCESS,
 } from "../constants/timerSetConstants";
-import { BASE_API_URL } from "../constants/commonConstants";
+// import { BASE_API_URL } from "../constants/commonConstants";
 
 export const getTimerSet = (key) => async (dispatch, getState) => {
   const currentState = getState();
@@ -30,7 +30,7 @@ export const getTimerSet = (key) => async (dispatch, getState) => {
   });
 
   try {
-    const { data } = await axios.get(`${BASE_API_URL}/timerset/${key}`);
+    const { data } = await axios.get(`/api/v1/timerset/${key}`);
 
     if (data.success === true) {
       dispatch({
@@ -85,7 +85,7 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
 
   try {
     const { data } = await axios.post(
-      `${BASE_API_URL}/timerset/reset/${key}`,
+      `/api/v1/timerset/reset/${key}`,
       null,
       config
     );
@@ -133,7 +133,7 @@ export const startTimer = (key, timerId) => async (dispatch, getState) => {
 
   try {
     const { data } = await axios.post(
-      `${BASE_API_URL}/timerset/${key}/start/${timerId}`,
+      `/api/v1/timerset/${key}/start/${timerId}`,
       null,
       config
     );
@@ -181,7 +181,7 @@ export const stopTimer = (key, timerId) => async (dispatch, getState) => {
 
   try {
     const { data } = await axios.post(
-      `${BASE_API_URL}/timerset/${key}/stop/${timerId}`,
+      `/api/v1/timerset/${key}/stop/${timerId}`,
       null,
       config
     );
