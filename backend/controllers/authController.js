@@ -2,7 +2,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 
-import sendEmail from "../utils/sendEmail.js";
+import sendEmail from "../Utils/sendEmail.js";
 import User from "../models/userModel.js";
 import RefreshToken from "../models/refreshTokenModel.js";
 
