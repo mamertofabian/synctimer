@@ -30,8 +30,8 @@ const ActiveTimer = () => {
   return (
     <div>
       {activeTimer ? (
-        <div>
-          <div className="d-flex justify-content-center align-items-center">
+        <div className="d-flex flex-column justify-content-center align-items-center">
+          <div className="text-center">
             <Countdown
               date={
                 new Date(activeTimer.started).getTime() +
@@ -40,21 +40,21 @@ const ActiveTimer = () => {
               overtime={true}
               renderer={renderer}
             />
-            {userInfo && userInfo.email && (
-              <div>
-                <Button
-                  variant="warning"
-                  disabled={activeTimer.ended || !activeTimer.started}
-                  onClick={() => {
-                    dispatch(stopTimer(timerSet.key, activeTimer._id));
-                  }}
-                >
-                  Stop
-                </Button>
-              </div>
-            )}
           </div>
           <h3 className="text-center">{activeTimer.name}</h3>
+          {userInfo && userInfo.email && (
+            <div>
+              <Button
+                variant="warning"
+                disabled={activeTimer.ended || !activeTimer.started}
+                onClick={() => {
+                  dispatch(stopTimer(timerSet.key, activeTimer._id));
+                }}
+              >
+                Stop
+              </Button>
+            </div>
+          )}
         </div>
       ) : (
         <div></div>
