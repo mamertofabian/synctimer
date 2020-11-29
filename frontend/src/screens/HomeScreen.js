@@ -13,8 +13,10 @@ import ActiveTimer from "../components/ActiveTimer";
 
 const HomeScreen = ({ location }) => {
   const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
   const timerSetState = useSelector((state) => state.timerSetState);
-  const { timerSet, loading, error } = timerSetState;
+  const { timerSet, loading, loaded, error } = timerSetState;
   const activeTimerState = useSelector((state) => state.activeTimerState);
   const { activeTimer } = activeTimerState;
 
@@ -31,6 +33,14 @@ const HomeScreen = ({ location }) => {
     }
   }, [dispatch, key]);
 
+  useEffect(() => {
+    if (loaded && !userInfo) {
+      setTimeout(() => {
+        dispatch(getTimerSet(key));
+      }, 3000);
+    }
+  }, [loaded, dispatch, key, userInfo]);
+
   const schemaTimerKey = yup.object({
     timerKey: yup.string().required("Timer key is required"),
   });
@@ -45,9 +55,7 @@ const HomeScreen = ({ location }) => {
     window.location.assign(`/?key=${timerKey}`);
   };
 
-  return loading ? (
-    <Loader />
-  ) : error ? (
+  return error ? (
     <Message variant="danger">{error}</Message>
   ) : timerSet ? (
     <div>
@@ -59,7 +67,7 @@ const HomeScreen = ({ location }) => {
       </div>
       {activeTimer ? (
         <ActiveTimer />
-      ) : (
+      ) : timerSet && timerSet.timers ? (
         <div>
           <ListGroup as="ul">
             {timerSet.timers.map((t, index) => {
@@ -85,16 +93,20 @@ const HomeScreen = ({ location }) => {
               </strong>
             </ListGroup.Item>
           </ListGroup>
-          <div className="d-flex justify-content-center">
-            <Button
-              variant="danger"
-              className="mt-3"
-              onClick={() => dispatch(resetTimerSet(timerSet.key))}
-            >
-              Reset
-            </Button>
-          </div>
+          {userInfo && (
+            <div className="d-flex justify-content-center">
+              <Button
+                variant="danger"
+                className="mt-3"
+                onClick={() => dispatch(resetTimerSet(timerSet.key))}
+              >
+                Reset
+              </Button>
+            </div>
+          )}
         </div>
+      ) : (
+        <Loader />
       )}
     </div>
   ) : (

@@ -18,7 +18,13 @@ import {
 } from "../constants/timerSetConstants";
 import { BASE_API_URL } from "../constants/commonConstants";
 
-export const getTimerSet = (key) => async (dispatch) => {
+export const getTimerSet = (key) => async (dispatch, getState) => {
+  const currentState = getState();
+  let currentActiveTimer;
+  if (currentState.activeTimerState) {
+    currentActiveTimer = currentState.activeTimerState.activeTimer;
+  }
+
   dispatch({
     type: GET_TIMERSET_REQUEST,
   });
@@ -39,6 +45,8 @@ export const getTimerSet = (key) => async (dispatch) => {
         if (activeTimer) {
           dispatch(activateTimer(activeTimer));
         }
+      } else if (currentActiveTimer) {
+        dispatch(deactivateTimer());
       }
     } else {
       dispatch({

@@ -27,12 +27,14 @@ const Header = () => {
     <header>
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand href="/">SharedTimer</Navbar.Brand>
+          <Navbar.Brand href="/">SyncTimer</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <LinkContainer to="/">
-                <Nav.Link>Home</Nav.Link>
+                <Nav.Link>
+                  <i className="fas fa-home"></i> Home
+                </Nav.Link>
               </LinkContainer>
               {userInfo && userInfo.name ? (
                 <Nav.Link onClick={handleLogout}>
