@@ -1,1 +1,1 @@
-# sharedtimer
+# SyncTimer

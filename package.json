@@ -1,5 +1,5 @@
 {
-  "name": "sharedtimer",
+  "name": "synctimer",
   "version": "1.0.0",
   "description": "A Timer Sharing App",
   "main": "server.js",
