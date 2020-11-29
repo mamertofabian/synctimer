@@ -25,7 +25,7 @@ const HomeScreen = ({ location }) => {
 
   // TODO: get from query params or from a list of timersets (admin dashboard)
   // eslint-disable-next-line no-unused-vars
-  const [key, setKey] = useState(keyParams);
+  const key = keyParams;
 
   useEffect(() => {
     if (key) {
@@ -59,11 +59,9 @@ const HomeScreen = ({ location }) => {
     <Message variant="danger">{error}</Message>
   ) : timerSet ? (
     <div>
-      {timerSet && (
+      {timerSet && timerSet.name && (
         <div className="d-flex justify-content-between align-items-center">
-          <h4>
-            {timerSet.name} ({timerSet.desc})
-          </h4>
+          <h4>{`${timerSet.name} (${timerSet.desc})`}</h4>
           <p className="text-primary">Timer Key: {timerSet.key}</p>
         </div>
       )}
@@ -75,7 +73,7 @@ const HomeScreen = ({ location }) => {
             {timerSet.timers.map((t, index) => {
               return (
                 <Timer
-                  timerSetKey={key}
+                  timerSetKey={timerSet.key}
                   t={t}
                   key={index}
                   activeTimerId={timerSet.activeTimerId}

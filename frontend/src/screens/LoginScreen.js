@@ -14,6 +14,8 @@ const LoginScreen = ({ history, location }) => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
+  const timerSetState = useSelector((state) => state.timerSetState);
+  const { timerSet } = timerSetState;
 
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { result: passwordResetResult } = userResetPassword;
@@ -26,10 +28,14 @@ const LoginScreen = ({ history, location }) => {
       // if (redirect === "upgrade") {
       //   history.push(`/${redirect}`);
       // } else {
-      history.push("/");
+      if (timerSet) {
+        history.push(`/?key=${timerSet.key}`);
+      } else {
+        history.push("/");
+      }
       // }
     }
-  }, [history, userInfo]);
+  }, [history, userInfo, timerSet]);
 
   useEffect(() => {
     dispatch(registerReset());

@@ -5,7 +5,10 @@ const Footer = () => {
     <footer>
       <Container>
         <Row>
-          <Col className="text-center py-3">Copyright &copy; CodingWitness</Col>
+          <Col className="text-center py-3">
+            Copyright &copy;{" "}
+            <a href="https://codingwitness.com">CodingWitness</a>
+          </Col>
         </Row>
       </Container>
     </footer>
