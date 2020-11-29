@@ -59,12 +59,14 @@ const HomeScreen = ({ location }) => {
     <Message variant="danger">{error}</Message>
   ) : timerSet ? (
     <div>
-      <div className="d-flex justify-content-between align-items-center">
-        <h4>
-          {timerSet.name} ({timerSet.desc})
-        </h4>
-        <p className="text-primary">Timer Key: {timerSet.key}</p>
-      </div>
+      {timerSet && (
+        <div className="d-flex justify-content-between align-items-center">
+          <h4>
+            {timerSet.name} ({timerSet.desc})
+          </h4>
+          <p className="text-primary">Timer Key: {timerSet.key}</p>
+        </div>
+      )}
       {activeTimer ? (
         <ActiveTimer />
       ) : timerSet && timerSet.timers ? (
