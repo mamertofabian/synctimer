@@ -16,24 +16,30 @@ import {
 } from "../constants/timerSetConstants";
 
 export const getTimerSetReducer = (state = {}, action) => {
+  const currentTimerSet = { ...state.timerSet };
+  let timers = [];
+  if (currentTimerSet && currentTimerSet.timers) {
+    timers = [...currentTimerSet.timers];
+  }
+
   switch (action.type) {
     case GET_TIMERSET_REQUEST:
-      return { loading: true };
+      return { loading: true, loaded: false, timerSet: currentTimerSet };
     case GET_TIMERSET_SUCCESS:
       return {
         loading: false,
+        loaded: true,
         timerSet: action.payload,
       };
     case GET_TIMERSET_FAIL:
       return {
         loading: false,
         error: action.payload,
+        timerSet: currentTimerSet,
       };
     case START_TIMER_REQUEST:
       return { starting: true, timerSet: action.payload };
     case START_TIMER_SUCCESS:
-      const currentTimerSet = { ...state.timerSet };
-      const timers = [...currentTimerSet.timers];
       const timer = timers.find((t) => t._id === action.payload._id);
       if (timer) {
         timer.started = action.payload.started;
@@ -54,17 +60,15 @@ export const getTimerSetReducer = (state = {}, action) => {
     case STOP_TIMER_REQUEST:
       return { stopping: true, timerSet: action.payload };
     case STOP_TIMER_SUCCESS:
-      const currentTimerSet2 = { ...state.timerSet };
-      const timers2 = [...currentTimerSet2.timers];
-      const timer2 = timers2.find((t) => t._id === action.payload._id);
+      const timer2 = timers.find((t) => t._id === action.payload._id);
       if (timer2) {
         timer2.ended = action.payload.ended;
-        currentTimerSet2.activeTimerId = null;
+        currentTimerSet.activeTimerId = null;
       }
-      currentTimerSet2.timers = timers2;
+      currentTimerSet.timers = timers;
       return {
         stopping: false,
-        timerSet: currentTimerSet2,
+        timerSet: currentTimerSet,
       };
     case STOP_TIMER_FAIL:
       return {

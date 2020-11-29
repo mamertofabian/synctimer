@@ -9,8 +9,9 @@ import Message from "../components/Message";
 import { getTimerSet, resetTimerSet } from "../actions/timerSetActions";
 import FormContainer from "../components/FormContainer";
 import { useFormik } from "formik";
+import ActiveTimer from "../components/ActiveTimer";
 
-const HomeScreen = ({ history, location }) => {
+const HomeScreen = ({ location }) => {
   const dispatch = useDispatch();
   const timerSetState = useSelector((state) => state.timerSetState);
   const { timerSet, loading, error } = timerSetState;
@@ -29,14 +30,6 @@ const HomeScreen = ({ history, location }) => {
       dispatch(getTimerSet(key));
     }
   }, [dispatch, key]);
-
-  // useEffect(() => {
-  //   if (activeTimer && timerSet && timerSet.activeTimerId) {
-  //     history.push(`/timer?key=${key}`);
-  //   } else {
-  //     history.push(`/?key=${key}`);
-  //   }
-  // }, [activeTimer, history, key, timerSet]);
 
   const schemaTimerKey = yup.object({
     timerKey: yup.string().required("Timer key is required"),
@@ -58,43 +51,51 @@ const HomeScreen = ({ history, location }) => {
     <Message variant="danger">{error}</Message>
   ) : timerSet ? (
     <div>
-      <h4>
-        {timerSet.name} ({timerSet.desc})
-      </h4>
-      <ListGroup as="ul">
-        {timerSet.timers.map((t, index) => {
-          return (
-            <Timer
-              timerSetKey={key}
-              t={t}
-              key={index}
-              activeTimerId={timerSet.activeTimerId}
-              history={history}
-            />
-          );
-        })}
-      </ListGroup>
-      <ListGroup as="ul">
-        <ListGroup.Item as="li" active>
-          <strong>
-            Total duration:{" "}
-            {timerSet.timers.reduce(
-              (total, current) => total + current.duration,
-              0
-            )}
-            m
-          </strong>
-        </ListGroup.Item>
-      </ListGroup>
-      <div className="d-flex justify-content-center">
-        <Button
-          variant="danger"
-          className="mt-3"
-          onClick={() => dispatch(resetTimerSet(timerSet.key))}
-        >
-          Reset
-        </Button>
+      <div className="d-flex justify-content-between align-items-center">
+        <h4>
+          {timerSet.name} ({timerSet.desc})
+        </h4>
+        <p className="text-primary">Timer Key: {timerSet.key}</p>
       </div>
+      {activeTimer ? (
+        <ActiveTimer />
+      ) : (
+        <div>
+          <ListGroup as="ul">
+            {timerSet.timers.map((t, index) => {
+              return (
+                <Timer
+                  timerSetKey={key}
+                  t={t}
+                  key={index}
+                  activeTimerId={timerSet.activeTimerId}
+                />
+              );
+            })}
+          </ListGroup>
+          <ListGroup as="ul">
+            <ListGroup.Item as="li" active>
+              <strong>
+                Total duration:{" "}
+                {timerSet.timers.reduce(
+                  (total, current) => total + current.duration,
+                  0
+                )}
+                m
+              </strong>
+            </ListGroup.Item>
+          </ListGroup>
+          <div className="d-flex justify-content-center">
+            <Button
+              variant="danger"
+              className="mt-3"
+              onClick={() => dispatch(resetTimerSet(timerSet.key))}
+            >
+              Reset
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   ) : (
     <div>

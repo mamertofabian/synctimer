@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ms from "ms";
 import { startTimer, stopTimer } from "../actions/timerSetActions";
 
-const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
+const Timer = ({ timerSetKey, t, activeTimerId }) => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -49,7 +49,7 @@ const Timer = ({ timerSetKey, t, activeTimerId, history }) => {
             disabled={activeTimerId}
             onClick={() => {
               dispatch(startTimer(timerSetKey, t._id));
-              history.push(`/timer?key=${timerSetKey}`);
+              // history.push(`/timer?key=${timerSetKey}`);
             }}
           >
             Start

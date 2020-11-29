@@ -42,13 +42,3 @@
   flex-direction: row;
   justify-content: space-between;
 }
-
-header,
-main,
-footer {
-  display: none;
-}
-
-.show {
-  display: block;
-}
