@@ -10,10 +10,15 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
   const { userInfo } = userLogin;
 
   const finished = t.started && t.ended;
-  const actualDuration = finished
+  let actualDuration = finished
     ? t.duration * 1000 * 60 -
       (new Date(t.ended).getTime() - new Date(t.started).getTime())
     : null;
+
+  if (actualDuration < 0) {
+    actualDuration = actualDuration * -1 + ms("1d");
+  }
+
   let timeString;
   if (finished) {
     const date = new Date(0);
@@ -24,7 +29,7 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
   const formattedDuration = finished ? timeString : null;
   const actualDurationStyle = finished
     ? actualDuration <= ms(`${t.duration}m`)
-      ? { color: "lightgreen" }
+      ? { color: "limegreen" }
       : { color: "red" }
     : {};
 

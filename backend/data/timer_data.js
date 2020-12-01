@@ -1,7 +1,7 @@
 const timerSets = [
   {
     name: "Midweek Meeting",
-    desc: "Week of Nov 23-29",
+    desc: "Week of Nov 30-Dec 6",
     timeBudget: 105, // 1.75 hours in minutes
     key: "d9a36958",
     owner: "Jun",
@@ -36,19 +36,11 @@ const timerSets = [
       },
       {
         name: "Living as Christians",
-        duration: 5,
+        duration: 15,
       },
       {
-        name: "Local Needs",
-        duration: 10,
-      },
-      {
-        name: "Congregation Bible Study",
-        duration: 30,
-      },
-      {
-        name: "Concluding Comments",
-        duration: 3,
+        name: "1st Service Talk",
+        duration: 33,
       },
     ],
   },

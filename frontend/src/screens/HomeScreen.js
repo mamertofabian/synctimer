@@ -100,7 +100,7 @@ const HomeScreen = ({ location }) => {
                 className="mt-3"
                 onClick={() => dispatch(resetTimerSet(timerSet.key))}
               >
-                Reset
+                Start Over
               </Button>
             </div>
           )}
