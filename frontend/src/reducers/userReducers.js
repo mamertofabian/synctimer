@@ -16,6 +16,7 @@ import {
   USER_RESET_PASSWORD_REQUEST,
   USER_RESET_PASSWORD_RESET,
   USER_RESET_PASSWORD_SUCCESS,
+  USER_UPDATE_TOKEN,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -30,6 +31,12 @@ export const userLoginReducer = (state = {}, action) => {
       return { userInfo: action.payload };
     case USER_LOGIN_RESET:
       return {};
+    case USER_UPDATE_TOKEN:
+      const userLoginState = { ...state.userInfo };
+      userLoginState.token = action.payload;
+      return {
+        userInfo: userLoginState,
+      };
     default:
       return state;
   }

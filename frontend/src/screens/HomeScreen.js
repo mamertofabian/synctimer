@@ -10,6 +10,7 @@ import { getTimerSet, resetTimerSet } from "../actions/timerSetActions";
 import FormContainer from "../components/FormContainer";
 import { useFormik } from "formik";
 import ActiveTimer from "../components/ActiveTimer";
+import { logout } from "../actions/userActions";
 
 const HomeScreen = ({ location }) => {
   const dispatch = useDispatch();
@@ -40,6 +41,12 @@ const HomeScreen = ({ location }) => {
       }, 3000);
     }
   }, [loaded, dispatch, key, userInfo]);
+
+  useEffect(() => {
+    if (error && error === "Not authorized to access this route") {
+      dispatch(logout());
+    }
+  }, [dispatch, error]);
 
   const schemaTimerKey = yup.object({
     timerKey: yup.string().required("Timer key is required"),

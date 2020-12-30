@@ -109,6 +109,7 @@ const resetAllTimers = asyncHandler(async (req, res) => {
     res.json({
       success: true,
       data: timerSet,
+      token: req.user.token,
     });
   } else {
     res.status(404);

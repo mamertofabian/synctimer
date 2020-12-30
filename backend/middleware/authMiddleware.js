@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 
 import User from "../models/userModel.js";
+import RefreshToken from "../models/refreshTokenModel.js";
 
 // Protect routes
 export const protect = asyncHandler(async (req, res, next) => {
@@ -32,8 +33,36 @@ export const protect = asyncHandler(async (req, res, next) => {
 
     next();
   } catch (err) {
-    res.status(401);
-    throw new Error("Not authorized to access this route");
+    if (req.body.refreshToken) {
+      console.log("refreshToken provided");
+      const refreshToken = req.body.refreshToken;
+      const existingRefreshToken = await RefreshToken.findOne({
+        refreshToken: refreshToken,
+      });
+      if (existingRefreshToken) {
+        console.log("Refresh token valid... refreshing access token");
+        jwt.verify(
+          refreshToken,
+          process.env.JWT_REFRESH_TOKEN_SECRET,
+          async (err, userInfo) => {
+            if (err) return res.sendStatus(403);
+
+            const user = await User.findById(userInfo.id);
+            const accessToken = user.getSignedJwtToken();
+            user.token = accessToken;
+            req.user = user;
+
+            next();
+          }
+        );
+      } else {
+        res.status(401);
+        throw new Error("Not authorized to access this route");
+      }
+    } else {
+      res.status(401);
+      throw new Error("Not authorized to access this route");
+    }
   }
 });
 

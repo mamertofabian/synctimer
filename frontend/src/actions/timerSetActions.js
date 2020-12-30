@@ -16,6 +16,7 @@ import {
   STOP_TIMER_REQUEST,
   STOP_TIMER_SUCCESS,
 } from "../constants/timerSetConstants";
+import { USER_UPDATE_TOKEN } from "../constants/userConstants";
 // import { BASE_API_URL } from "../constants/commonConstants";
 
 export const getTimerSet = (key) => async (dispatch, getState) => {
@@ -86,7 +87,7 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
   try {
     const { data } = await axios.post(
       `/api/v1/timerset/reset/${key}`,
-      null,
+      { refreshToken: userLogin.userInfo.refreshToken },
       config
     );
 
@@ -95,6 +96,12 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
         type: RESET_TIMERSET_SUCCESS,
         payload: data.data,
       });
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
       dispatch(deactivateTimer());
     } else {
       dispatch({
