@@ -1,6 +1,24 @@
 import asyncHandler from "express-async-handler";
 import TimerSet from "../models/timerSetModel.js";
 
+// @desc      Get all timersets
+// @route     POST /api/v1/timerset
+// @access    Private
+const getAllTimerSets = asyncHandler(async (req, res) => {
+  const timerSets = await TimerSet.find({ user: req.user });
+
+  if (timerSets) {
+    res.json({
+      success: true,
+      data: timerSets,
+      token: req.user.token,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Cannot retrieve timer sets");
+  }
+});
+
 // @desc      Get Timer Set by key
 // @route     GET /api/v1/timerset/:key
 // @access    Public
@@ -117,4 +135,4 @@ const resetAllTimers = asyncHandler(async (req, res) => {
   }
 });
 
-export { getTimerSet, startTimer, stopTimer, resetAllTimers };
+export { getAllTimerSets, getTimerSet, startTimer, stopTimer, resetAllTimers };

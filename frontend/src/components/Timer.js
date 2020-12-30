@@ -35,8 +35,8 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
 
   return (
     <ListGroup.Item as="li" className="timer-li">
-      <div>
-        <span>
+      <div className="d-flex justify-content-center align-items-center">
+        <span className="mr-2">
           <strong>{t.name}</strong>
         </span>
         <span> | {t.duration}m</span>

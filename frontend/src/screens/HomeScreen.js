@@ -11,6 +11,7 @@ import FormContainer from "../components/FormContainer";
 import { useFormik } from "formik";
 import ActiveTimer from "../components/ActiveTimer";
 import { logout } from "../actions/userActions";
+import { LinkContainer } from "react-router-bootstrap";
 
 const HomeScreen = ({ location }) => {
   const dispatch = useDispatch();
@@ -121,7 +122,7 @@ const HomeScreen = ({ location }) => {
       <FormContainer>
         <Form noValidate onSubmit={siFormik.handleSubmit}>
           <Form.Group controlId="timerKey">
-            <Form.Label>Please enter the timer key below:</Form.Label>
+            <Form.Label>Please enter a timer key below:</Form.Label>
             <Form.Control
               type="text"
               placeholder="Timer Key"
@@ -146,6 +147,72 @@ const HomeScreen = ({ location }) => {
           </Button>
         </Form>
       </FormContainer>
+      <div>
+        <hr />
+        {userInfo ? (
+          <div>
+            <h5>Your Timer Sets</h5>
+            <ListGroup as="ul">
+              <ListGroup.Item as="li" className="timerset-li">
+                <div className="d-flex justify-content-center align-items-center">
+                  <span className="mr-3">Midweek Meeting (Dec 25, 2020)</span>
+                  <span>Key: 9d3f2310</span>
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  <Button
+                    className="ml-3"
+                    variant="primary"
+                    // disabled={activeTimerId}
+                    onClick={() => {
+                      submitHandler("9d3f2310");
+                    }}
+                  >
+                    Select
+                  </Button>
+                  <Button
+                    className="ml-3"
+                    variant="info"
+                    // disabled={activeTimerId}
+                    onClick={() => {
+                      // dispatch(startTimer(timerSetKey, t._id));
+                      // history.push(`/timer?key=${timerSetKey}`);
+                      alert("Under construction");
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className="ml-3"
+                    variant="danger"
+                    // disabled={t.ended || !t.started}
+                    onClick={() => {
+                      // dispatch(stopTimer(timerSetKey, t._id))
+                      alert("Under construction");
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            </ListGroup>
+            <hr />
+            <Button
+              variant="info"
+              type="submit"
+              className="mr-3"
+              disabled={loading}
+            >
+              Create new Timer Set
+            </Button>
+          </div>
+        ) : (
+          <LinkContainer to="/login">
+            <Button variant="link">
+              Sign-in to create your own timer set. Registration is free.
+            </Button>
+          </LinkContainer>
+        )}
+      </div>
     </div>
   );
 };

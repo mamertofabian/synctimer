@@ -34,7 +34,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     next();
   } catch (err) {
     if (req.body.refreshToken) {
-      console.log("refreshToken provided");
+      console.log("Expired access token. Refresh token provided");
       const refreshToken = req.body.refreshToken;
       const existingRefreshToken = await RefreshToken.findOne({
         refreshToken: refreshToken,
@@ -57,6 +57,7 @@ export const protect = asyncHandler(async (req, res, next) => {
         );
       } else {
         res.status(401);
+        console.log("Refresh token invalid");
         throw new Error("Not authorized to access this route");
       }
     } else {

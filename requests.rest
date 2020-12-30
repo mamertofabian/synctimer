@@ -2,6 +2,16 @@ GET http://localhost:5000
 
 ###
 
+POST http://localhost:5000/api/v1/timerset
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzVhYjcxODVlYWEzMTFkODFjM2E3ZSIsImlhdCI6MTYwOTM2NjQwNSwiZXhwIjoxNjA5NDUyODA1fQ._-pVheYroqbS8gorxvJ_gW5a2F_eIcO-jldLuCCRcdY
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzVhYjcxODVlYWEzMTFkODFjM2E3ZSIsImlhdCI6MTYwOTM2NDE4M30.As4GG4QbWftPXnJeNfr5xzA9fFPhNcSYYJfKt4OPDNY"
+}
+
+###
+
 GET http://localhost:5000/api/v1/timerset/d9a36958
 
 ###

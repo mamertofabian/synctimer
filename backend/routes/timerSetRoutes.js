@@ -1,6 +1,7 @@
 import express from "express";
 
 import {
+  getAllTimerSets,
   getTimerSet,
   startTimer,
   stopTimer,
@@ -10,6 +11,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+router.route("/").post(protect, getAllTimerSets);
 router.route("/:key").get(getTimerSet);
 router.route("/reset/:key").post(protect, resetAllTimers);
 router.route("/:key/start/:id").post(protect, startTimer);

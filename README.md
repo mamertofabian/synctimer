@@ -1,8 +1,8 @@
 # SyncTimer
 
 # Coming Soon
-1. Register new user
-2. Password reset
+1. Register new user - DONE
+2. Password reset - DONE
 3. Create own set of timers
 4. Option to show idle timer (in-between comments)
 5. Edit timer on the fly
