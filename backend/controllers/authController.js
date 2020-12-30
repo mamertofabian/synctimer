@@ -207,7 +207,7 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   // const resetUrl = `${req.protocol}://${req.get(
   //   "host"
   // )}/api/v1/auth/resetpassword/${resetToken}`;
-  const resetUrl = `https://account.usedelight.com/password-reset/?resettoken=${resetToken}`;
+  const resetUrl = `https://synctimerapp.herokuapp.com/password-reset/?resettoken=${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requested to reset your password. Please follow this link to continue: \n\n ${resetUrl}`;
 
@@ -236,7 +236,7 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Reset password
-// @route     POST /api/v1/resetpassword/:resettoken
+// @route     PUT /api/v1/resetpassword/:resettoken
 // @access    Public
 export const resetPassword = asyncHandler(async (req, res, next) => {
   if (!req.body.password) {

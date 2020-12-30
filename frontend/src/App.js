@@ -6,6 +6,9 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
+import PasswordReset from "./screens/PasswordReset";
 
 const App = () => {
   return (
@@ -16,6 +19,9 @@ const App = () => {
           <Container>
             <Route path="/" component={HomeScreen} exact />
             <Route path="/login" component={LoginScreen} />
+            <Route path="/register" component={RegisterScreen} />
+            <Route path="/forgotpassword" component={ForgotPasswordScreen} />
+            <Route path="/password-reset" component={PasswordReset} />
           </Container>
         </main>
         <Footer />

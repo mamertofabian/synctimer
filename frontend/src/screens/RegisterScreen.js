@@ -157,15 +157,13 @@ const RegisterScreen = ({ history, location }) => {
         <Button variant="primary" type="submit" className="mr-3">
           Sign-up
         </Button>
-        {/*
-          <LinkContainer to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+        <LinkContainer to={redirect ? `/login?redirect=${redirect}` : "/login"}>
           <Button variant="link">
             Already have an account?
             <br />
             Click here to sign-in.
           </Button>
         </LinkContainer>
-        */}
       </Form>
     </FormContainer>
   );

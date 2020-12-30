@@ -9,6 +9,7 @@ import { login, registerReset } from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import { LinkContainer } from "react-router-bootstrap";
 
 const LoginScreen = ({ history, location }) => {
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ const LoginScreen = ({ history, location }) => {
   const userResetPassword = useSelector((state) => state.userResetPassword);
   const { result: passwordResetResult } = userResetPassword;
 
-  // const searchParams = new URLSearchParams(location.search);
-  // const redirect = searchParams.get("redirect");
+  const searchParams = new URLSearchParams(location.search);
+  const redirect = searchParams.get("redirect");
 
   useEffect(() => {
     if (userInfo && userInfo.token) {
@@ -49,10 +50,10 @@ const LoginScreen = ({ history, location }) => {
     passwordSignIn: yup.string().required("Password is required"),
   });
 
-  // const forgotPasswordHandler = (e) => {
-  //   e.preventDefault();
-  //   history.push("/forgotpassword");
-  // };
+  const forgotPasswordHandler = (e) => {
+    e.preventDefault();
+    history.push("/forgotpassword");
+  };
 
   const signinHandler = async (email, password) => {
     dispatch(login(email, password));
@@ -71,11 +72,6 @@ const LoginScreen = ({ history, location }) => {
         <div>
           <Message variant="success">
             Your password has been reset successfully.
-          </Message>
-          <Message variant="info">
-            Please login below to view your account/upgrade.
-            <br /> Or open a new UseDelight tab and login from there to access
-            your subscription benefits.
           </Message>
         </div>
       )}
@@ -135,7 +131,6 @@ const LoginScreen = ({ history, location }) => {
         >
           Sign-in
         </Button>
-        {/*
         <LinkContainer
           to={redirect ? `/register?redirect=${redirect}` : "/register"}
         >
@@ -154,7 +149,6 @@ const LoginScreen = ({ history, location }) => {
             Forgot password?
           </Button>
         </div>
-        */}
       </Form>
     </FormContainer>
   );

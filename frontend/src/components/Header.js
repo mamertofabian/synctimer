@@ -5,6 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useHistory } from "react-router-dom";
 
 import { logout } from "../actions/userActions";
+import { Fragment } from "react";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -37,15 +38,25 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               {userInfo && userInfo.name ? (
-                <Nav.Link onClick={handleLogout}>
-                  <i className="fas fa-user"></i> Sign Out
-                </Nav.Link>
-              ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link>
-                    <i className="fas fa-user"></i> Sign In
+                <Fragment>
+                  <Nav.Link>Welcome, {userInfo.name}</Nav.Link>
+                  <Nav.Link onClick={handleLogout}>
+                    <i className="fas fa-user"></i> Sign Out
                   </Nav.Link>
-                </LinkContainer>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <LinkContainer to="/login">
+                    <Nav.Link>
+                      <i className="fas fa-user"></i> Sign In
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/register">
+                    <Nav.Link>
+                      <i className="fas fa-user-plus"></i> Register
+                    </Nav.Link>
+                  </LinkContainer>
+                </Fragment>
               )}
             </Nav>
           </Navbar.Collapse>
