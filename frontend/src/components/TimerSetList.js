@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Button, ListGroup } from "react-bootstrap";
 
-const TimerSetList = () => {
+const TimerSetList = ({ history }) => {
   const allTimerSetState = useSelector((state) => state.allTimerSetState);
   const {
     allTimerSet,
@@ -55,11 +55,8 @@ const TimerSetList = () => {
                   className="ml-2"
                   variant="info"
                   title="Edit"
-                  // disabled={activeTimerId}
                   onClick={() => {
-                    // dispatch(startTimer(timerSetKey, t._id));
-                    // history.push(`/timer?key=${timerSetKey}`);
-                    alert("Under construction");
+                    history.push(`/edit?key=${s.key}`);
                   }}
                 >
                   <i className="far fa-edit"></i>

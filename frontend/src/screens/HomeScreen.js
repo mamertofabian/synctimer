@@ -64,10 +64,10 @@ const HomeScreen = ({ history, location }) => {
   }, [dispatch, timerSetError]);
 
   useEffect(() => {
-    if (!allTimerSetLoaded && !allTimerSetLoading && !allTimerSet) {
+    if (!allTimerSetLoaded && !allTimerSetLoading) {
       dispatch(getAllTimerSets());
     }
-  }, []);
+  }, [dispatch, allTimerSetLoaded, allTimerSetLoading]);
 
   return timerSetError ? (
     <Message variant="danger">{timerSetError}</Message>
@@ -93,7 +93,7 @@ const HomeScreen = ({ history, location }) => {
       <div>
         <hr />
         {userInfo && allTimerSet ? (
-          <TimerSetList />
+          <TimerSetList history={history} />
         ) : (
           <LinkContainer to="/login">
             <Button variant="link">
