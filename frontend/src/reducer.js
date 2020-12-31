@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import {
   getTimerSetReducer,
   activeTimerReducer,
+  allTimerSetReducer,
 } from "./reducers/timerSetReducers";
 import {
   userForgotPasswordReducer,
@@ -12,6 +13,7 @@ import {
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
+  allTimerSetState: allTimerSetReducer,
   timerSetState: getTimerSetReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,

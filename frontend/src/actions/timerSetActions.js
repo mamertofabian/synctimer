@@ -2,7 +2,11 @@ import axios from "axios";
 
 import {
   ACTIVATE_TIMER,
+  CLEAR_TIMERSET,
   DEACTIVATE_TIMER,
+  GET_ALLTIMERSET_FAIL,
+  GET_ALLTIMERSET_REQUEST,
+  GET_ALLTIMERSET_SUCCESS,
   GET_TIMERSET_FAIL,
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
@@ -18,6 +22,62 @@ import {
 } from "../constants/timerSetConstants";
 import { USER_UPDATE_TOKEN } from "../constants/userConstants";
 // import { BASE_API_URL } from "../constants/commonConstants";
+
+export const getAllTimerSets = (key) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: GET_ALLTIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset`,
+      {
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: GET_ALLTIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: GET_ALLTIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: GET_ALLTIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 export const getTimerSet = (key) => async (dispatch, getState) => {
   const currentState = getState();
@@ -118,6 +178,12 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const clearTimerSet = () => {
+  return {
+    type: CLEAR_TIMERSET,
+  };
 };
 
 export const startTimer = (key, timerId) => async (dispatch, getState) => {

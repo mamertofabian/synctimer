@@ -6,19 +6,36 @@ import * as yup from "yup";
 import Timer from "../components/Timer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getTimerSet, resetTimerSet } from "../actions/timerSetActions";
+import {
+  clearTimerSet,
+  getAllTimerSets,
+  getTimerSet,
+  resetTimerSet,
+} from "../actions/timerSetActions";
 import FormContainer from "../components/FormContainer";
 import { useFormik } from "formik";
 import ActiveTimer from "../components/ActiveTimer";
 import { logout } from "../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
 
-const HomeScreen = ({ location }) => {
+const HomeScreen = ({ history, location }) => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const allTimerSetState = useSelector((state) => state.allTimerSetState);
+  const {
+    allTimerSet,
+    loading: allTimerSetLoading,
+    loaded: allTimerSetLoaded,
+    error: allTimerSetError,
+  } = allTimerSetState;
   const timerSetState = useSelector((state) => state.timerSetState);
-  const { timerSet, loading, loaded, error } = timerSetState;
+  const {
+    timerSet,
+    loading: timerSetLoading,
+    loaded: timerSetLoaded,
+    error: timerSetError,
+  } = timerSetState;
   const activeTimerState = useSelector((state) => state.activeTimerState);
   const { activeTimer } = activeTimerState;
 
@@ -36,18 +53,27 @@ const HomeScreen = ({ location }) => {
   }, [dispatch, key]);
 
   useEffect(() => {
-    if (loaded && !userInfo) {
+    if (timerSetLoaded && !userInfo) {
       setTimeout(() => {
         dispatch(getTimerSet(key));
       }, 3000);
     }
-  }, [loaded, dispatch, key, userInfo]);
+  }, [timerSetLoaded, dispatch, key, userInfo]);
 
   useEffect(() => {
-    if (error && error === "Not authorized to access this route") {
+    if (
+      timerSetError &&
+      timerSetError === "Not authorized to access this route"
+    ) {
       dispatch(logout());
     }
-  }, [dispatch, error]);
+  }, [dispatch, timerSetError]);
+
+  useEffect(() => {
+    if (!allTimerSetLoaded && !allTimerSetLoading && !allTimerSet) {
+      dispatch(getAllTimerSets());
+    }
+  }, []);
 
   const schemaTimerKey = yup.object({
     timerKey: yup.string().required("Timer key is required"),
@@ -63,8 +89,8 @@ const HomeScreen = ({ location }) => {
     window.location.assign(`/?key=${timerKey}`);
   };
 
-  return error ? (
-    <Message variant="danger">{error}</Message>
+  return timerSetError ? (
+    <Message variant="danger">{timerSetError}</Message>
   ) : timerSet ? (
     <div>
       {timerSet && timerSet.name && (
@@ -78,12 +104,12 @@ const HomeScreen = ({ location }) => {
       ) : timerSet && timerSet.timers ? (
         <div>
           <ListGroup as="ul">
-            {timerSet.timers.map((t, index) => {
+            {timerSet.timers.map((t) => {
               return (
                 <Timer
                   timerSetKey={timerSet.key}
                   t={t}
-                  key={index}
+                  key={t._id}
                   activeTimerId={timerSet.activeTimerId}
                 />
               );
@@ -102,13 +128,23 @@ const HomeScreen = ({ location }) => {
             </ListGroup.Item>
           </ListGroup>
           {userInfo && (
-            <div className="d-flex justify-content-center">
+            <div className="d-flex flex-column justify-content-center align-items-center">
               <Button
                 variant="danger"
                 className="mt-3"
                 onClick={() => dispatch(resetTimerSet(timerSet.key))}
               >
-                Start Over
+                <i className="fas fa-sync"></i> Start Over
+              </Button>
+              <Button
+                variant="info"
+                className="mt-3"
+                onClick={() => {
+                  dispatch(clearTimerSet());
+                  history.push("/");
+                }}
+              >
+                <i className="fas fa-list"></i> Select another timer set
               </Button>
             </div>
           )}
@@ -141,7 +177,7 @@ const HomeScreen = ({ location }) => {
             variant="primary"
             type="submit"
             className="mr-3"
-            disabled={loading}
+            disabled={timerSetLoading}
           >
             Submit
           </Button>
@@ -149,58 +185,78 @@ const HomeScreen = ({ location }) => {
       </FormContainer>
       <div>
         <hr />
-        {userInfo ? (
+        {userInfo && allTimerSet ? (
           <div>
             <h5>Your Timer Sets</h5>
             <ListGroup as="ul">
-              <ListGroup.Item as="li" className="timerset-li">
-                <div className="d-flex justify-content-center align-items-center">
-                  <span className="mr-3">Midweek Meeting (Dec 25, 2020)</span>
-                  <span>Key: 9d3f2310</span>
-                </div>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Button
-                    className="ml-3"
-                    variant="primary"
-                    // disabled={activeTimerId}
-                    onClick={() => {
-                      submitHandler("9d3f2310");
-                    }}
-                  >
-                    Select
-                  </Button>
-                  <Button
-                    className="ml-3"
-                    variant="info"
-                    // disabled={activeTimerId}
-                    onClick={() => {
-                      // dispatch(startTimer(timerSetKey, t._id));
-                      // history.push(`/timer?key=${timerSetKey}`);
-                      alert("Under construction");
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    className="ml-3"
-                    variant="danger"
-                    // disabled={t.ended || !t.started}
-                    onClick={() => {
-                      // dispatch(stopTimer(timerSetKey, t._id))
-                      alert("Under construction");
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </ListGroup.Item>
+              {allTimerSet.map((s) => {
+                return (
+                  <ListGroup.Item as="li" className="timerset-li" key={s.key}>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <span className="mr-3">{`${s.name} (${s.desc})`}</span>
+                      <span>Key: {s.key}</span>
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <Button
+                        className="ml-2"
+                        variant="primary"
+                        title="Select"
+                        // disabled={activeTimerId}
+                        onClick={() => {
+                          submitHandler(s.key);
+                        }}
+                      >
+                        <i className="far fa-check-circle"></i>
+                      </Button>
+                      <Button
+                        className="ml-2"
+                        variant="secondary"
+                        title="Clone"
+                        // disabled={activeTimerId}
+                        onClick={() => {
+                          // dispatch(startTimer(timerSetKey, t._id));
+                          // history.push(`/timer?key=${timerSetKey}`);
+                          alert("Under construction");
+                        }}
+                      >
+                        <i className="far fa-clone"></i>
+                      </Button>
+                      <Button
+                        className="ml-2"
+                        variant="info"
+                        title="Edit"
+                        // disabled={activeTimerId}
+                        onClick={() => {
+                          // dispatch(startTimer(timerSetKey, t._id));
+                          // history.push(`/timer?key=${timerSetKey}`);
+                          alert("Under construction");
+                        }}
+                      >
+                        <i className="far fa-edit"></i>
+                      </Button>
+                      <Button
+                        className="ml-2"
+                        variant="danger"
+                        title="Delete"
+                        // disabled={t.ended || !t.started}
+                        onClick={() => {
+                          // dispatch(stopTimer(timerSetKey, t._id))
+                          alert("Under construction");
+                        }}
+                      >
+                        <i className="far fa-trash-alt"></i>
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                );
+              })}
             </ListGroup>
             <hr />
             <Button
               variant="info"
               type="submit"
               className="mr-3"
-              disabled={loading}
+              disabled={timerSetLoading}
             >
               Create new Timer Set
             </Button>

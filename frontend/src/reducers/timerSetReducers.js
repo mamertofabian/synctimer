@@ -1,6 +1,10 @@
 import {
   ACTIVATE_TIMER,
+  CLEAR_TIMERSET,
   DEACTIVATE_TIMER,
+  GET_ALLTIMERSET_FAIL,
+  GET_ALLTIMERSET_REQUEST,
+  GET_ALLTIMERSET_SUCCESS,
   GET_TIMERSET_FAIL,
   GET_TIMERSET_REQUEST,
   GET_TIMERSET_SUCCESS,
@@ -14,6 +18,26 @@ import {
   STOP_TIMER_REQUEST,
   STOP_TIMER_SUCCESS,
 } from "../constants/timerSetConstants";
+
+export const allTimerSetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_ALLTIMERSET_REQUEST:
+      return { loading: true, loaded: false };
+    case GET_ALLTIMERSET_SUCCESS:
+      return {
+        loading: false,
+        loaded: true,
+        allTimerSet: action.payload,
+      };
+    case GET_ALLTIMERSET_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
 
 export const getTimerSetReducer = (state = {}, action) => {
   const currentTimerSet = { ...state.timerSet };
@@ -87,6 +111,11 @@ export const getTimerSetReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    case CLEAR_TIMERSET:
+      return {
+        loading: false,
+        timerSet: undefined,
       };
     default:
       return state;

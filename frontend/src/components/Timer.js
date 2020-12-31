@@ -57,7 +57,7 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
               // history.push(`/timer?key=${timerSetKey}`);
             }}
           >
-            Start
+            <i className="far fa-play-circle"></i> Start
           </Button>
           <Button
             className="ml-3"
@@ -65,7 +65,7 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
             disabled={t.ended || !t.started}
             onClick={() => dispatch(stopTimer(timerSetKey, t._id))}
           >
-            Stop
+            <i className="far fa-stop-circle"></i> Stop
           </Button>
         </div>
       )}
