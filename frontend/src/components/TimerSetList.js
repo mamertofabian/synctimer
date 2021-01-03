@@ -1,22 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, ListGroup } from "react-bootstrap";
 import AddTimerSet from "./AddTimerSet/AddTimerSet";
 import {
+  cloneTimerSet,
+  getAllTimerSets,
   showAddTimerSetModal,
   showDeleteTimerSetModal,
+  resetCloneTimerSet,
 } from "../actions/timerSetActions";
 import DeleteTimerSet from "./DeleteTimerSet/DeleteTimerSet";
 
 const TimerSetList = ({ history }) => {
   const dispatch = useDispatch();
   const allTimerSetState = useSelector((state) => state.allTimerSetState);
-  const {
-    allTimerSet,
-    loading: allTimerSetLoading,
-    loaded: allTimerSetLoaded,
-    error: allTimerSetError,
-  } = allTimerSetState;
+  const { allTimerSet, loading: allTimerSetLoading } = allTimerSetState;
+  const cloneTimerSetState = useSelector((state) => state.cloneTimerSetState);
+  const { newTimerSet } = cloneTimerSetState;
+
+  useEffect(() => {
+    if (newTimerSet) {
+      dispatch(getAllTimerSets());
+      dispatch(resetCloneTimerSet());
+    }
+  }, [dispatch, newTimerSet]);
 
   const toggleShowAddTimerSet = useSelector(
     (state) => state.toggleShowAddTimerSetState.show
@@ -57,10 +64,25 @@ const TimerSetList = ({ history }) => {
                     // history.push(`/timer?key=${timerSetKey}`);
                     e.stopPropagation();
                     e.preventDefault();
-                    alert("Under construction");
+                    dispatch(cloneTimerSet(s));
                   }}
                 >
                   <i className="far fa-clone"></i>
+                </Button>
+                <Button
+                  className="ml-2"
+                  variant="success"
+                  title="Copy share link"
+                  // disabled={activeTimerId}
+                  onClick={(e) => {
+                    // dispatch(startTimer(timerSetKey, t._id));
+                    // history.push(`/timer?key=${timerSetKey}`);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    alert("Under construction");
+                  }}
+                >
+                  <i className="far fa-share-square"></i>
                 </Button>
                 <Button
                   className="ml-2"

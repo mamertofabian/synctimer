@@ -16,7 +16,7 @@ const AddTimerSet = () => {
   const dispatch = useDispatch();
 
   const saveTimerSetState = useSelector((state) => state.saveTimerSetState);
-  const { newTimerSet, loading, loaded, error } = saveTimerSetState;
+  const { newTimerSet, loading } = saveTimerSetState;
 
   useEffect(() => {
     document.getElementById("timerSetName").focus();

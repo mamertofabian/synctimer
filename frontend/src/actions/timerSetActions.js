@@ -125,6 +125,12 @@ export const resetAddTimerSet = () => {
   };
 };
 
+export const resetCloneTimerSet = () => {
+  return {
+    type: c.CLONE_TIMERSET_RESET,
+  };
+};
+
 export const showUpdateTimerSetModal = (timerSet) => {
   return {
     type: c.SHOW_UPDATE_TIMERSET,
@@ -212,6 +218,71 @@ export const saveTimerSet = (timerSet) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: c.SAVE_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const cloneTimerSet = (timerSetToClone) => async (
+  dispatch,
+  getState
+) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.CLONE_TIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const timerSet = { ...timerSetToClone };
+
+    delete timerSet._id;
+    delete timerSet.key;
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/save`,
+      {
+        timerSet,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.CLONE_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.CLONE_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.CLONE_TIMERSET_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message

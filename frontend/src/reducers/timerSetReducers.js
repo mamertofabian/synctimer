@@ -127,6 +127,30 @@ export const saveTimerSetReducer = (state = {}, action) => {
   }
 };
 
+export const cloneTimerSetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.CLONE_TIMERSET_REQUEST:
+      return { loading: true, loaded: false };
+    case c.CLONE_TIMERSET_SUCCESS:
+      return {
+        loading: false,
+        loaded: true,
+        newTimerSet: action.payload,
+      };
+    case c.CLONE_TIMERSET_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case c.CLONE_TIMERSET_RESET:
+      return {
+        newTimerSet: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
 export const updateTimerSetReducer = (state = {}, action) => {
   switch (action.type) {
     case c.UPDATE_TIMERSET_REQUEST:

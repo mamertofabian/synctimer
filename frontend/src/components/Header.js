@@ -28,7 +28,9 @@ const Header = () => {
     <header>
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand href="/">SyncTimer</Navbar.Brand>
+          <Navbar.Brand href="/">
+            SyncTimer <span className="badge badge-info">beta</span>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">

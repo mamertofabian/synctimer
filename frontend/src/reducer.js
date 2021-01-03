@@ -16,6 +16,7 @@ import {
   saveTimerReducer,
   deleteTimerReducer,
   updateTimerReducer,
+  cloneTimerSetReducer,
 } from "./reducers/timerSetReducers";
 import {
   userForgotPasswordReducer,
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   allTimerSetState: allTimerSetReducer,
   timerSetState: getTimerSetReducer,
   saveTimerSetState: saveTimerSetReducer,
+  cloneTimerSetState: cloneTimerSetReducer,
   updateTimerSetState: updateTimerSetReducer,
   deleteTimerSetState: deleteTimerSetReducer,
   saveTimerState: saveTimerReducer,
