@@ -7,7 +7,7 @@ import {
   getTimerSet,
   hideUpdateTimerModal,
   resetUpdateTimer,
-  saveTimer,
+  updateTimer,
 } from "../../actions/timerSetActions";
 
 import "./UpdateTimer.css";
@@ -17,8 +17,8 @@ const UpdateTimer = () => {
   const dispatch = useDispatch();
   const timerSetState = useSelector((state) => state.timerSetState);
   const { timerSet } = timerSetState;
-  const saveTimerState = useSelector((state) => state.saveTimerState);
-  const { newTimer, loading, loaded, error } = saveTimerState;
+  const updateTimerState = useSelector((state) => state.updateTimerState);
+  const { updatedTimer, loading, loaded, error } = updateTimerState;
   const timerToUpdate = useSelector(
     (state) => state.toggleShowUpdateTimerState.timer
   );
@@ -28,19 +28,19 @@ const UpdateTimer = () => {
   }, []);
 
   useEffect(() => {
-    if (newTimer) {
+    if (updatedTimer) {
       dispatch(hideUpdateTimerModal());
       dispatch(resetUpdateTimer());
       dispatch(getTimerSet(timerSet.key));
     }
-  }, [dispatch, newTimer, timerSet.key]);
+  }, [dispatch, updatedTimer, timerSet.key]);
 
   const submitHandler = (values) => {
     const timers = [...timerSet.timers];
     const targetTimer = timers.find((t) => t._id === timerToUpdate._id);
     targetTimer.name = values.timerName;
     targetTimer.duration = values.duration;
-    dispatch(saveTimer({ ...timerSet, timers }));
+    dispatch(updateTimer({ ...timerSet, timers }));
   };
 
   const schema = yup.object({

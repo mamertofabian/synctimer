@@ -10,6 +10,7 @@ import {
 } from "../actions/timerSetActions";
 import AddTimer from "./AddTimer/AddTimer";
 import UpdateTimer from "./UpdateTimer/UpdateTimer";
+import DeleteTimer from "./DeleteTimer/DeleteTimer";
 
 const TimerList = ({ history }) => {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ const TimerList = ({ history }) => {
   );
   const toggleShowUpdateTimer = useSelector(
     (state) => state.toggleShowUpdateTimerState.show
+  );
+  const toggleShowDeleteTimer = useSelector(
+    (state) => state.toggleShowDeleteTimerState.show
   );
 
   return (
@@ -86,6 +90,7 @@ const TimerList = ({ history }) => {
       )}
       {toggleShowAddTimer && <AddTimer />}
       {toggleShowUpdateTimer && <UpdateTimer />}
+      {toggleShowDeleteTimer && <DeleteTimer />}
     </div>
   );
 };

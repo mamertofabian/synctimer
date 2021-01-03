@@ -3,6 +3,7 @@ import { Button, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ms from "ms";
 import {
+  showDeleteTimerModal,
   showUpdateTimerModal,
   startTimer,
   stopTimer,
@@ -67,8 +68,8 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
             className="ml-2"
             variant="info"
             title="Edit"
+            disabled={t.started}
             onClick={() => {
-              // history.push(`/edit?key=${s.key}`);
               dispatch(showUpdateTimerModal(t));
             }}
           >
@@ -78,9 +79,9 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
             className="ml-2"
             variant="danger"
             title="Delete"
-            // disabled={t.ended || !t.started}
+            disabled={t.started}
             onClick={() => {
-              // dispatch(showDeleteTimerSetModal(s));
+              dispatch(showDeleteTimerModal(t));
             }}
           >
             <i className="far fa-trash-alt"></i>

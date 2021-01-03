@@ -431,10 +431,10 @@ export const resetUpdateTimer = () => {
   };
 };
 
-export const showDeleteTimerModal = (timerSet) => {
+export const showDeleteTimerModal = (timer) => {
   return {
     type: c.SHOW_DELETE_TIMER,
-    payload: timerSet,
+    payload: timer,
   };
 };
 
@@ -511,7 +511,7 @@ export const updateTimer = (timerSet) => async (dispatch, getState) => {
   const { userLogin } = getState();
 
   dispatch({
-    type: c.UPDATE_TIMERSET_REQUEST,
+    type: c.UPDATE_TIMER_REQUEST,
   });
 
   try {
@@ -537,7 +537,7 @@ export const updateTimer = (timerSet) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: c.UPDATE_TIMERSET_SUCCESS,
+        type: c.UPDATE_TIMER_SUCCESS,
         payload: data.data,
       });
 
@@ -549,13 +549,13 @@ export const updateTimer = (timerSet) => async (dispatch, getState) => {
       }
     } else {
       dispatch({
-        type: c.UPDATE_TIMERSET_FAIL,
+        type: c.UPDATE_TIMER_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: c.UPDATE_TIMERSET_FAIL,
+      type: c.UPDATE_TIMER_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
@@ -564,11 +564,11 @@ export const updateTimer = (timerSet) => async (dispatch, getState) => {
   }
 };
 
-export const deleteTimer = (timerSetKey) => async (dispatch, getState) => {
+export const deleteTimer = (timerSet) => async (dispatch, getState) => {
   const { userLogin } = getState();
 
   dispatch({
-    type: c.DELETE_TIMERSET_REQUEST,
+    type: c.DELETE_TIMER_REQUEST,
   });
 
   try {
@@ -584,9 +584,9 @@ export const deleteTimer = (timerSetKey) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(
-      `/api/v1/timerset/delete`,
+      `/api/v1/timerset/save`,
       {
-        key: timerSetKey,
+        timerSet,
         refreshToken: userLogin.userInfo.refreshToken,
       },
       config
@@ -594,7 +594,7 @@ export const deleteTimer = (timerSetKey) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: c.DELETE_TIMERSET_SUCCESS,
+        type: c.DELETE_TIMER_SUCCESS,
         payload: data.data,
       });
 
@@ -606,13 +606,13 @@ export const deleteTimer = (timerSetKey) => async (dispatch, getState) => {
       }
     } else {
       dispatch({
-        type: c.DELETE_TIMERSET_FAIL,
+        type: c.DELETE_TIMER_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: c.DELETE_TIMERSET_FAIL,
+      type: c.DELETE_TIMER_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
