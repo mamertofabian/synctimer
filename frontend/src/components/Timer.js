@@ -2,7 +2,11 @@ import React from "react";
 import { Button, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ms from "ms";
-import { startTimer, stopTimer } from "../actions/timerSetActions";
+import {
+  showUpdateTimerModal,
+  startTimer,
+  stopTimer,
+} from "../actions/timerSetActions";
 
 const Timer = ({ timerSetKey, t, activeTimerId }) => {
   const dispatch = useDispatch();
@@ -65,6 +69,7 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
             title="Edit"
             onClick={() => {
               // history.push(`/edit?key=${s.key}`);
+              dispatch(showUpdateTimerModal(t));
             }}
           >
             <i className="far fa-edit"></i>

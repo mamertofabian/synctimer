@@ -237,7 +237,7 @@ export const toggleShowAddTimerReducer = (state = false, action) => {
 export const toggleShowUpdateTimerReducer = (state = false, action) => {
   switch (action.type) {
     case c.SHOW_UPDATE_TIMER:
-      return { show: true, timerSet: action.payload };
+      return { show: true, timer: action.payload };
     case c.HIDE_UPDATE_TIMER:
       return { show: false };
     default:

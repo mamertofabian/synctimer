@@ -412,10 +412,10 @@ export const resetAddTimer = () => {
   };
 };
 
-export const showUpdateTimerModal = (timerSet) => {
+export const showUpdateTimerModal = (timer) => {
   return {
     type: c.SHOW_UPDATE_TIMER,
-    payload: timerSet,
+    payload: timer,
   };
 };
 

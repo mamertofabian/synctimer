@@ -5,20 +5,23 @@ import * as yup from "yup";
 
 import {
   getTimerSet,
-  hideAddTimerModal,
-  resetAddTimer,
+  hideUpdateTimerModal,
+  resetUpdateTimer,
   saveTimer,
 } from "../../actions/timerSetActions";
 
-import "./AddTimer.css";
+import "./UpdateTimer.css";
 import { Button, Form } from "react-bootstrap";
 
-const AddTimer = () => {
+const UpdateTimer = () => {
   const dispatch = useDispatch();
   const timerSetState = useSelector((state) => state.timerSetState);
   const { timerSet } = timerSetState;
   const saveTimerState = useSelector((state) => state.saveTimerState);
   const { newTimer, loading, loaded, error } = saveTimerState;
+  const timerToUpdate = useSelector(
+    (state) => state.toggleShowUpdateTimerState.timer
+  );
 
   useEffect(() => {
     document.getElementById("timerName").focus();
@@ -26,19 +29,17 @@ const AddTimer = () => {
 
   useEffect(() => {
     if (newTimer) {
-      dispatch(hideAddTimerModal());
-      dispatch(resetAddTimer());
+      dispatch(hideUpdateTimerModal());
+      dispatch(resetUpdateTimer());
       dispatch(getTimerSet(timerSet.key));
     }
   }, [dispatch, newTimer, timerSet.key]);
 
   const submitHandler = (values) => {
     const timers = [...timerSet.timers];
-    timers.push({
-      name: values.timerName,
-      duration: values.duration,
-      // order: values.order || timerSet.timers.length + 1,
-    });
+    const targetTimer = timers.find((t) => t._id === timerToUpdate._id);
+    targetTimer.name = values.timerName;
+    targetTimer.duration = values.duration;
     dispatch(saveTimer({ ...timerSet, timers }));
   };
 
@@ -57,18 +58,18 @@ const AddTimer = () => {
 
   const formik = useFormik({
     initialValues: {
-      timerName: "",
-      duration: "",
-      // order: "",
+      timerName: timerToUpdate.name,
+      duration: timerToUpdate.duration,
+      // order: timerToUpdate.order,
     },
     validationSchema: schema,
     onSubmit: (values) => submitHandler(values),
   });
 
   return (
-    <div className="addtimer-container">
-      <div className="addtimer-content">
-        <h5>Add new Timer for {timerSet.name}</h5>
+    <div className="updatetimer-container">
+      <div className="updatetimer-content">
+        <h5>Update Timer for {timerSet.name}</h5>
         <hr />
         <Form noValidate onSubmit={formik.handleSubmit}>
           <Form.Group controlId="timerName">
@@ -127,7 +128,7 @@ const AddTimer = () => {
               className="mt-3 ml-3"
               disabled={loading}
               onClick={() => {
-                dispatch(hideAddTimerModal());
+                dispatch(hideUpdateTimerModal());
               }}
             >
               <i className="fas fa-ban"></i> Cancel
@@ -139,4 +140,4 @@ const AddTimer = () => {
   );
 };
 
-export default AddTimer;
+export default UpdateTimer;
