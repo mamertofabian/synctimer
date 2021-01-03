@@ -41,19 +41,22 @@ const TimerList = ({ history }) => {
             <Timer
               timerSetKey={timerSet.key}
               t={t}
+              timerSet={timerSet}
               key={t._id}
               activeTimerId={timerSet.activeTimerId}
             />
           );
         })}
-        <ListGroup.Item as="li">
-          <Button
-            variant="success"
-            onClick={() => dispatch(showAddTimerModal())}
-          >
-            <i className="far fa-plus-square"></i> Add New Timer
-          </Button>
-        </ListGroup.Item>
+        {userInfo && userInfo.user === timerSet.user && (
+          <ListGroup.Item as="li">
+            <Button
+              variant="success"
+              onClick={() => dispatch(showAddTimerModal())}
+            >
+              <i className="far fa-plus-square"></i> Add New Timer
+            </Button>
+          </ListGroup.Item>
+        )}
       </ListGroup>
       <ListGroup as="ul">
         <ListGroup.Item as="li" active>
@@ -69,13 +72,15 @@ const TimerList = ({ history }) => {
       </ListGroup>
       {userInfo && (
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <Button
-            variant="danger"
-            className="mt-3"
-            onClick={() => dispatch(resetTimerSet(timerSet.key))}
-          >
-            <i className="fas fa-sync"></i> Start Over
-          </Button>
+          {userInfo.user === timerSet.user && (
+            <Button
+              variant="danger"
+              className="mt-3"
+              onClick={() => dispatch(resetTimerSet(timerSet.key))}
+            >
+              <i className="fas fa-sync"></i> Start Over
+            </Button>
+          )}
           <Button
             variant="info"
             className="mt-3"

@@ -67,22 +67,7 @@ const TimerSetList = ({ history }) => {
                     dispatch(cloneTimerSet(s));
                   }}
                 >
-                  <i className="far fa-clone"></i>
-                </Button>
-                <Button
-                  className="ml-2"
-                  variant="success"
-                  title="Copy share link"
-                  // disabled={activeTimerId}
-                  onClick={(e) => {
-                    // dispatch(startTimer(timerSetKey, t._id));
-                    // history.push(`/timer?key=${timerSetKey}`);
-                    e.stopPropagation();
-                    e.preventDefault();
-                    alert("Under construction");
-                  }}
-                >
-                  <i className="far fa-share-square"></i>
+                  <i className="far fa-clone"></i> Clone
                 </Button>
                 <Button
                   className="ml-2"

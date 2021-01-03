@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Overlay, Tooltip } from "react-bootstrap";
 
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -19,6 +19,8 @@ import UpdateTimerSet from "../components/UpdateTimerSet/UpdateTimerSet";
 
 const HomeScreen = ({ history, location }) => {
   const dispatch = useDispatch();
+  const copyTarget = useRef(null);
+  const [showCopied, setShowCopied] = useState(false);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const allTimerSetState = useSelector((state) => state.allTimerSetState);
@@ -55,12 +57,15 @@ const HomeScreen = ({ history, location }) => {
   }, [dispatch, key]);
 
   useEffect(() => {
-    if (timerSetLoaded && !userInfo) {
+    if (
+      timerSetLoaded &&
+      (!userInfo || (userInfo && userInfo.user !== timerSet.user))
+    ) {
       setTimeout(() => {
         dispatch(getTimerSet(key));
       }, 3000);
     }
-  }, [timerSetLoaded, dispatch, key, userInfo]);
+  }, [timerSetLoaded, dispatch, key, userInfo, timerSet]);
 
   useEffect(() => {
     if (
@@ -82,7 +87,7 @@ const HomeScreen = ({ history, location }) => {
   ) : timerSet ? (
     <div>
       {timerSet && timerSet.name && (
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center mb-2">
           <div className="d-flex align-items-center">
             <h4 className="mb-0">{`${timerSet.name} (${timerSet.desc})`}</h4>
             {userInfo && userInfo.user === timerSet.user && (
@@ -95,7 +100,36 @@ const HomeScreen = ({ history, location }) => {
               </span>
             )}
           </div>
-          <p className="text-primary">Timer Key: {timerSet.key}</p>
+          <div className="d-flex align-items-center">
+            <p className="text-primary mb-0">Timer Key: {timerSet.key}</p>
+            <span
+              className="align-self-center ml-2 text-info edit-timerset-icon"
+              title="Copy share link"
+              ref={copyTarget}
+              onClick={() => {
+                const link = `${window.location.origin}/?key=${timerSet.key}`;
+                navigator.clipboard.writeText(link).then(() => {
+                  setShowCopied(true);
+                  setTimeout(() => {
+                    setShowCopied(false);
+                  }, 3000);
+                });
+              }}
+            >
+              <i className="far fa-share-square"></i>
+            </span>
+            <Overlay
+              target={copyTarget.current}
+              show={showCopied}
+              placement="top"
+            >
+              {(props) => (
+                <Tooltip id="overlay-example" {...props}>
+                  Timerset link copied!
+                </Tooltip>
+              )}
+            </Overlay>
+          </div>
           {toggleShowUpdateTimerSet && <UpdateTimerSet />}
         </div>
       )}

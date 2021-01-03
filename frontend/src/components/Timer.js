@@ -9,7 +9,7 @@ import {
   stopTimer,
 } from "../actions/timerSetActions";
 
-const Timer = ({ timerSetKey, t, activeTimerId }) => {
+const Timer = ({ timerSetKey, t, timerSet, activeTimerId }) => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -52,7 +52,7 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
           </span>
         )}
       </div>
-      {userInfo && userInfo.email && (
+      {userInfo && userInfo.user === timerSet.user && (
         <div className="d-flex justify-content-center align-items-center">
           <Button
             className="ml-3"
