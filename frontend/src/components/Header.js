@@ -39,6 +39,12 @@ const Header = () => {
                   <i className="fas fa-home"></i> Home
                 </Nav.Link>
               </LinkContainer>
+              <Nav.Link
+                href="https://codingwitness.com/?p=341"
+                target="codingwitness"
+              >
+                <i className="fas fa-question-circle"></i> How to Use
+              </Nav.Link>
               {userInfo && userInfo.name ? (
                 <Fragment>
                   <Nav.Link>Welcome, {userInfo.name}</Nav.Link>
