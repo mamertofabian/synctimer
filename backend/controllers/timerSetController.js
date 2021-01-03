@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 import asyncHandler from "express-async-handler";
 import TimerSet from "../models/timerSetModel.js";
 
@@ -33,6 +35,77 @@ const getTimerSet = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error("Invalid timer key");
+  }
+});
+
+// @desc      Save Timer Set
+// @route     POST /api/v1/timerset/save
+// @access    Private
+const saveTimerSet = asyncHandler(async (req, res) => {
+  const editedTimerSet = req.body.timerSet;
+  editedTimerSet.user = req.user;
+
+  if (!editedTimerSet.key) {
+    editedTimerSet.key = crypto.randomBytes(7).toString("hex");
+  }
+
+  try {
+    let timerSet = {};
+    if (editedTimerSet._id) {
+      timerSet = await TimerSet.findByIdAndUpdate(
+        editedTimerSet._id,
+        editedTimerSet,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else {
+      timerSet = await TimerSet.create(editedTimerSet);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: timerSet,
+    });
+  } catch (error) {
+    console.log({ error });
+    res.status(404);
+    throw new Error("Error saving timerset");
+  }
+});
+
+// @desc      Delete Timer Set
+// @route     POST /api/v1/timerset/delete
+// @access    Private
+const deleteTimerSet = asyncHandler(async (req, res) => {
+  const key = req.body.key;
+  if (!key) {
+    res.status(404);
+    throw new Error("Timerset key not provided");
+  }
+
+  try {
+    const timerSet = await TimerSet.findOne({ key });
+    if (!timerSet) {
+      res.status(404);
+      throw new Error("Timer Set not found");
+    }
+
+    if (timerSet && timerSet.user.toString() !== req.user._id.toString()) {
+      res.status(401);
+      throw new Error("Cannot delete other user's timerset");
+    } else {
+      await timerSet.remove();
+      res.status(200).json({
+        success: true,
+        data: key,
+      });
+    }
+  } catch (error) {
+    console.log({ error });
+    res.status(404);
+    throw new Error("Error deleting timerset");
   }
 });
 
@@ -135,4 +208,12 @@ const resetAllTimers = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllTimerSets, getTimerSet, startTimer, stopTimer, resetAllTimers };
+export {
+  getAllTimerSets,
+  getTimerSet,
+  startTimer,
+  stopTimer,
+  resetAllTimers,
+  saveTimerSet,
+  deleteTimerSet,
+};

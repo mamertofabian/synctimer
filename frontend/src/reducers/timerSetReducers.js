@@ -1,35 +1,16 @@
-import {
-  ACTIVATE_TIMER,
-  CLEAR_TIMERSET,
-  DEACTIVATE_TIMER,
-  GET_ALLTIMERSET_FAIL,
-  GET_ALLTIMERSET_REQUEST,
-  GET_ALLTIMERSET_SUCCESS,
-  GET_TIMERSET_FAIL,
-  GET_TIMERSET_REQUEST,
-  GET_TIMERSET_SUCCESS,
-  RESET_TIMERSET_FAIL,
-  RESET_TIMERSET_REQUEST,
-  RESET_TIMERSET_SUCCESS,
-  START_TIMER_FAIL,
-  START_TIMER_REQUEST,
-  START_TIMER_SUCCESS,
-  STOP_TIMER_FAIL,
-  STOP_TIMER_REQUEST,
-  STOP_TIMER_SUCCESS,
-} from "../constants/timerSetConstants";
+import * as c from "../constants/timerSetConstants";
 
 export const allTimerSetReducer = (state = {}, action) => {
   switch (action.type) {
-    case GET_ALLTIMERSET_REQUEST:
+    case c.GET_ALLTIMERSET_REQUEST:
       return { loading: true, loaded: false };
-    case GET_ALLTIMERSET_SUCCESS:
+    case c.GET_ALLTIMERSET_SUCCESS:
       return {
         loading: false,
         loaded: true,
         allTimerSet: action.payload,
       };
-    case GET_ALLTIMERSET_FAIL:
+    case c.GET_ALLTIMERSET_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -47,23 +28,23 @@ export const getTimerSetReducer = (state = {}, action) => {
   }
 
   switch (action.type) {
-    case GET_TIMERSET_REQUEST:
+    case c.GET_TIMERSET_REQUEST:
       return { loading: true, loaded: false, timerSet: currentTimerSet };
-    case GET_TIMERSET_SUCCESS:
+    case c.GET_TIMERSET_SUCCESS:
       return {
         loading: false,
         loaded: true,
         timerSet: action.payload,
       };
-    case GET_TIMERSET_FAIL:
+    case c.GET_TIMERSET_FAIL:
       return {
         loading: false,
         error: action.payload,
         timerSet: currentTimerSet,
       };
-    case START_TIMER_REQUEST:
+    case c.START_TIMER_REQUEST:
       return { starting: true, timerSet: action.payload };
-    case START_TIMER_SUCCESS:
+    case c.START_TIMER_SUCCESS:
       const timer = timers.find((t) => t._id === action.payload._id);
       if (timer) {
         timer.started = action.payload.started;
@@ -75,15 +56,15 @@ export const getTimerSetReducer = (state = {}, action) => {
         starting: false,
         timerSet: currentTimerSet,
       };
-    case START_TIMER_FAIL:
+    case c.START_TIMER_FAIL:
       return {
         starting: false,
         error: action.payload,
         timerSet: { ...state.timerSet },
       };
-    case STOP_TIMER_REQUEST:
+    case c.STOP_TIMER_REQUEST:
       return { stopping: true, timerSet: action.payload };
-    case STOP_TIMER_SUCCESS:
+    case c.STOP_TIMER_SUCCESS:
       const timer2 = timers.find((t) => t._id === action.payload._id);
       if (timer2) {
         timer2.ended = action.payload.ended;
@@ -94,25 +75,25 @@ export const getTimerSetReducer = (state = {}, action) => {
         stopping: false,
         timerSet: currentTimerSet,
       };
-    case STOP_TIMER_FAIL:
+    case c.STOP_TIMER_FAIL:
       return {
         stopping: false,
         error: action.payload,
         timerSet: { ...state.timerSet },
       };
-    case RESET_TIMERSET_REQUEST:
+    case c.RESET_TIMERSET_REQUEST:
       return { loading: true };
-    case RESET_TIMERSET_SUCCESS:
+    case c.RESET_TIMERSET_SUCCESS:
       return {
         loading: false,
         timerSet: action.payload,
       };
-    case RESET_TIMERSET_FAIL:
+    case c.RESET_TIMERSET_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_TIMERSET:
+    case c.CLEAR_TIMERSET:
       return {
         loading: false,
         timerSet: undefined,
@@ -122,13 +103,94 @@ export const getTimerSetReducer = (state = {}, action) => {
   }
 };
 
+export const saveTimerSetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.SAVE_TIMERSET_REQUEST:
+      return { loading: true, loaded: false };
+    case c.SAVE_TIMERSET_SUCCESS:
+      return {
+        loading: false,
+        loaded: true,
+        newTimerSet: action.payload,
+      };
+    case c.SAVE_TIMERSET_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case c.SAVE_TIMERSET_RESET:
+      return {
+        newTimerSet: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
+export const deleteTimerSetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.DELETE_TIMERSET_REQUEST:
+      return { deleting: true, deleted: false };
+    case c.DELETE_TIMERSET_SUCCESS:
+      return {
+        deleting: false,
+        deleted: true,
+        deletedTimerSetKey: action.payload,
+      };
+    case c.DELETE_TIMERSET_FAIL:
+      return {
+        deleting: false,
+        error: action.payload,
+      };
+    case c.DELETE_TIMERSET_RESET:
+      return {
+        deletedTimerSetKey: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
+export const toggleShowAddTimerSetMainReducer = (state = false, action) => {
+  switch (action.type) {
+    case c.SHOW_ADD_TIMERSET_MAIN:
+      return { show: true };
+    case c.HIDE_ADD_TIMERSET_MAIN:
+      return { show: false };
+    default:
+      return state;
+  }
+};
+
+export const toggleShowUpdateTimerSetMainReducer = (state = false, action) => {
+  switch (action.type) {
+    case c.SHOW_UPDATE_TIMERSET_MAIN:
+      return { show: true, timerSet: action.payload };
+    case c.HIDE_UPDATE_TIMERSET_MAIN:
+      return { show: false };
+    default:
+      return state;
+  }
+};
+
+export const toggleShowDeleteTimerSetMainReducer = (state = false, action) => {
+  switch (action.type) {
+    case c.SHOW_DELETE_TIMERSET_MAIN:
+      return { show: true, timerSet: action.payload };
+    case c.HIDE_DELETE_TIMERSET_MAIN:
+      return { show: false };
+    default:
+      return state;
+  }
+};
+
 export const activeTimerReducer = (state = {}, action) => {
   switch (action.type) {
-    case ACTIVATE_TIMER:
+    case c.ACTIVATE_TIMER:
       return {
         activeTimer: action.payload,
       };
-    case DEACTIVATE_TIMER:
+    case c.DEACTIVATE_TIMER:
       return {
         activeTimer: undefined,
       };

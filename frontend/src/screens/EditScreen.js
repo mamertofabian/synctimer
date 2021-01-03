@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, ListGroup } from "react-bootstrap";
 
-import { clearTimerSet, getTimerSet } from "../actions/timerSetActions";
+import { getTimerSet } from "../actions/timerSetActions";
 import Loader from "../components/Loader";
-import TimerEdit from "../components/TimerEdit";
+import TimerSetForm from "../components/TimerSetForm";
 
 const EditScreen = ({ history, location }) => {
   const dispatch = useDispatch();
@@ -28,62 +27,20 @@ const EditScreen = ({ history, location }) => {
     }
   }, [dispatch, key, timerSetLoaded, timerSetLoading]);
 
+  useEffect(() => {
+    if (timerSet) {
+      console.log("Timer set loaded");
+    }
+  }, [timerSet]);
+
   return (
     <div>
       {timerSet && timerSet.timers ? (
         <div>
-          <div className="d-flex justify-content-between align-items-center">
-            <h4>{`${timerSet.name} (${timerSet.desc})`}</h4>
-            <p className="text-primary">Timer Key: {timerSet.key}</p>
-          </div>
-          <ListGroup as="ul">
-            {timerSet.timers.map((t) => {
-              return (
-                <TimerEdit
-                  timerSetKey={timerSet.key}
-                  t={t}
-                  key={t._id}
-                  activeTimerId={timerSet.activeTimerId}
-                />
-              );
-            })}
-          </ListGroup>
-          <ListGroup as="ul">
-            <ListGroup.Item as="li" active>
-              <strong>
-                Total duration:{" "}
-                {timerSet.timers.reduce(
-                  (total, current) => total + current.duration,
-                  0
-                )}
-                m
-              </strong>
-            </ListGroup.Item>
-          </ListGroup>
-          {userInfo && (
-            <div className="d-flex justify-content-center align-items-center">
-              <Button
-                variant="primary"
-                className="mt-3 ml-3"
-                onClick={() => {}}
-              >
-                <i className="far fa-save"></i> Save
-              </Button>
-              <Button
-                variant="warning"
-                className="mt-3 ml-3"
-                onClick={() => {
-                  dispatch(clearTimerSet());
-                  history.push("/");
-                }}
-              >
-                <i className="fas fa-ban"></i> Cancel
-              </Button>
-            </div>
-          )}
+          <TimerSetForm history={history} timerSet={timerSet} />
         </div>
       ) : (
-        <Loader />
+        timerSetLoading && <Loader />
       )}
     </div>
   );

@@ -1,8 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, ListGroup } from "react-bootstrap";
+import AddTimerSet from "./AddTimerSet/AddTimerSet";
+import {
+  showAddTimerSetMainModal,
+  showDeleteTimerSetMainModal,
+} from "../actions/timerSetActions";
+import DeleteTimerSet from "./DeleteTimerSet/DeleteTimerSet";
 
 const TimerSetList = ({ history }) => {
+  const dispatch = useDispatch();
   const allTimerSetState = useSelector((state) => state.allTimerSetState);
   const {
     allTimerSet,
@@ -10,6 +17,13 @@ const TimerSetList = ({ history }) => {
     loaded: allTimerSetLoaded,
     error: allTimerSetError,
   } = allTimerSetState;
+
+  const toggleShowAddTimerSetMain = useSelector(
+    (state) => state.toggleShowAddTimerSetMainState.show
+  );
+  const toggleShowDeleteTimerSetMain = useSelector(
+    (state) => state.toggleShowDeleteTimerSetMainState.show
+  );
 
   const selectHandler = (timerKey) => {
     window.location.assign(`/?key=${timerKey}`);
@@ -67,8 +81,7 @@ const TimerSetList = ({ history }) => {
                   title="Delete"
                   // disabled={t.ended || !t.started}
                   onClick={() => {
-                    // dispatch(stopTimer(timerSetKey, t._id))
-                    alert("Under construction");
+                    dispatch(showDeleteTimerSetMainModal(s));
                   }}
                 >
                   <i className="far fa-trash-alt"></i>
@@ -84,9 +97,12 @@ const TimerSetList = ({ history }) => {
         type="submit"
         className="mr-3"
         disabled={allTimerSetLoading}
+        onClick={() => dispatch(showAddTimerSetMainModal())}
       >
         Create new Timer Set
       </Button>
+      {toggleShowAddTimerSetMain && <AddTimerSet />}
+      {toggleShowDeleteTimerSetMain && <DeleteTimerSet />}
     </div>
   );
 };

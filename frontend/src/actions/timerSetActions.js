@@ -1,25 +1,6 @@
 import axios from "axios";
 
-import {
-  ACTIVATE_TIMER,
-  CLEAR_TIMERSET,
-  DEACTIVATE_TIMER,
-  GET_ALLTIMERSET_FAIL,
-  GET_ALLTIMERSET_REQUEST,
-  GET_ALLTIMERSET_SUCCESS,
-  GET_TIMERSET_FAIL,
-  GET_TIMERSET_REQUEST,
-  GET_TIMERSET_SUCCESS,
-  RESET_TIMERSET_FAIL,
-  RESET_TIMERSET_REQUEST,
-  RESET_TIMERSET_SUCCESS,
-  START_TIMER_FAIL,
-  START_TIMER_REQUEST,
-  START_TIMER_SUCCESS,
-  STOP_TIMER_FAIL,
-  STOP_TIMER_REQUEST,
-  STOP_TIMER_SUCCESS,
-} from "../constants/timerSetConstants";
+import * as c from "../constants/timerSetConstants";
 import { USER_UPDATE_TOKEN } from "../constants/userConstants";
 // import { BASE_API_URL } from "../constants/commonConstants";
 
@@ -27,7 +8,7 @@ export const getAllTimerSets = (key) => async (dispatch, getState) => {
   const { userLogin } = getState();
 
   dispatch({
-    type: GET_ALLTIMERSET_REQUEST,
+    type: c.GET_ALLTIMERSET_REQUEST,
   });
 
   try {
@@ -52,7 +33,7 @@ export const getAllTimerSets = (key) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: GET_ALLTIMERSET_SUCCESS,
+        type: c.GET_ALLTIMERSET_SUCCESS,
         payload: data.data,
       });
 
@@ -64,13 +45,13 @@ export const getAllTimerSets = (key) => async (dispatch, getState) => {
       }
     } else {
       dispatch({
-        type: GET_ALLTIMERSET_FAIL,
+        type: c.GET_ALLTIMERSET_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: GET_ALLTIMERSET_FAIL,
+      type: c.GET_ALLTIMERSET_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
@@ -87,7 +68,7 @@ export const getTimerSet = (key) => async (dispatch, getState) => {
   }
 
   dispatch({
-    type: GET_TIMERSET_REQUEST,
+    type: c.GET_TIMERSET_REQUEST,
   });
 
   try {
@@ -95,7 +76,7 @@ export const getTimerSet = (key) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: GET_TIMERSET_SUCCESS,
+        type: c.GET_TIMERSET_SUCCESS,
         payload: data.data,
       });
 
@@ -111,13 +92,176 @@ export const getTimerSet = (key) => async (dispatch, getState) => {
       }
     } else {
       dispatch({
-        type: GET_TIMERSET_FAIL,
+        type: c.GET_TIMERSET_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: GET_TIMERSET_FAIL,
+      type: c.GET_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const showAddTimerSetMainModal = () => {
+  return {
+    type: c.SHOW_ADD_TIMERSET_MAIN,
+  };
+};
+
+export const hideAddTimerSetMainModal = () => {
+  return {
+    type: c.HIDE_ADD_TIMERSET_MAIN,
+  };
+};
+
+export const resetAddTimerSet = () => {
+  return {
+    type: c.SAVE_TIMERSET_RESET,
+  };
+};
+
+export const showUpdateTimerSetMainModal = () => {
+  return {
+    type: c.SHOW_UPDATE_TIMERSET_MAIN,
+  };
+};
+
+export const hideUpdateTimerSetMainModal = () => {
+  return {
+    type: c.HIDE_UPDATE_TIMERSET_MAIN,
+  };
+};
+
+export const showDeleteTimerSetMainModal = (timerSet) => {
+  return {
+    type: c.SHOW_DELETE_TIMERSET_MAIN,
+    payload: timerSet,
+  };
+};
+
+export const hideDeleteTimerSetMainModal = () => {
+  return {
+    type: c.HIDE_DELETE_TIMERSET_MAIN,
+  };
+};
+
+export const resetDeleteTimerSetMain = () => {
+  return {
+    type: c.DELETE_TIMERSET_RESET,
+  };
+};
+
+export const saveTimerSet = (timerSet) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.SAVE_TIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/save`,
+      {
+        timerSet,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.SAVE_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.SAVE_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.SAVE_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteTimerSet = (timerSetKey) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.DELETE_TIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/delete`,
+      {
+        key: timerSetKey,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.DELETE_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.DELETE_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.DELETE_TIMERSET_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
@@ -130,7 +274,7 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
   const { userLogin } = getState();
 
   dispatch({
-    type: RESET_TIMERSET_REQUEST,
+    type: c.RESET_TIMERSET_REQUEST,
   });
 
   const authorization =
@@ -153,7 +297,7 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: RESET_TIMERSET_SUCCESS,
+        type: c.RESET_TIMERSET_SUCCESS,
         payload: data.data,
       });
       if (data.token) {
@@ -165,13 +309,13 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
       dispatch(deactivateTimer());
     } else {
       dispatch({
-        type: RESET_TIMERSET_FAIL,
+        type: c.RESET_TIMERSET_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: RESET_TIMERSET_FAIL,
+      type: c.RESET_TIMERSET_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
@@ -182,14 +326,14 @@ export const resetTimerSet = (key) => async (dispatch, getState) => {
 
 export const clearTimerSet = () => {
   return {
-    type: CLEAR_TIMERSET,
+    type: c.CLEAR_TIMERSET,
   };
 };
 
 export const startTimer = (key, timerId) => async (dispatch, getState) => {
   const { userLogin, timerSetState } = getState();
   dispatch({
-    type: START_TIMER_REQUEST,
+    type: c.START_TIMER_REQUEST,
     payload: timerSetState.timerSet,
   });
 
@@ -213,19 +357,19 @@ export const startTimer = (key, timerId) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: START_TIMER_SUCCESS,
+        type: c.START_TIMER_SUCCESS,
         payload: data.data,
       });
       dispatch(activateTimer(data.data));
     } else {
       dispatch({
-        type: START_TIMER_FAIL,
+        type: c.START_TIMER_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: START_TIMER_FAIL,
+      type: c.START_TIMER_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
@@ -237,7 +381,7 @@ export const startTimer = (key, timerId) => async (dispatch, getState) => {
 export const stopTimer = (key, timerId) => async (dispatch, getState) => {
   const { userLogin, timerSetState } = getState();
   dispatch({
-    type: STOP_TIMER_REQUEST,
+    type: c.STOP_TIMER_REQUEST,
     payload: timerSetState.timerSet,
   });
 
@@ -261,19 +405,19 @@ export const stopTimer = (key, timerId) => async (dispatch, getState) => {
 
     if (data.success === true) {
       dispatch({
-        type: STOP_TIMER_SUCCESS,
+        type: c.STOP_TIMER_SUCCESS,
         payload: data.data,
       });
       dispatch(deactivateTimer());
     } else {
       dispatch({
-        type: STOP_TIMER_FAIL,
+        type: c.STOP_TIMER_FAIL,
         payload: data.result.error,
       });
     }
   } catch (error) {
     dispatch({
-      type: STOP_TIMER_FAIL,
+      type: c.STOP_TIMER_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message
@@ -284,13 +428,13 @@ export const stopTimer = (key, timerId) => async (dispatch, getState) => {
 
 export const activateTimer = (timer) => {
   return {
-    type: ACTIVATE_TIMER,
+    type: c.ACTIVATE_TIMER,
     payload: timer,
   };
 };
 
 export const deactivateTimer = () => {
   return {
-    type: DEACTIVATE_TIMER,
+    type: c.DEACTIVATE_TIMER,
   };
 };
