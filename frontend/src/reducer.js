@@ -9,6 +9,7 @@ import {
   toggleShowDeleteTimerSetMainReducer,
   saveTimerSetReducer,
   deleteTimerSetReducer,
+  updateTimerSetReducer,
 } from "./reducers/timerSetReducers";
 import {
   userForgotPasswordReducer,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   allTimerSetState: allTimerSetReducer,
   timerSetState: getTimerSetReducer,
   saveTimerSetState: saveTimerSetReducer,
+  updateTimerSetState: updateTimerSetReducer,
   deleteTimerSetState: deleteTimerSetReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,

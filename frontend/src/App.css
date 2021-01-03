@@ -43,3 +43,7 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+.edit-timerset-icon:hover {
+  cursor: pointer;
+}

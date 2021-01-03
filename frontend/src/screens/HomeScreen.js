@@ -4,13 +4,18 @@ import { Button } from "react-bootstrap";
 
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getAllTimerSets, getTimerSet } from "../actions/timerSetActions";
+import {
+  getAllTimerSets,
+  getTimerSet,
+  showUpdateTimerSetMainModal,
+} from "../actions/timerSetActions";
 import ActiveTimer from "../components/ActiveTimer";
 import { logout } from "../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
 import TimerSetList from "../components/TimerSetList";
 import TimerList from "../components/TimerList";
 import TimerKeyForm from "../components/TimerKeyForm";
+import UpdateTimerSet from "../components/UpdateTimerSet/UpdateTimerSet";
 
 const HomeScreen = ({ history, location }) => {
   const dispatch = useDispatch();
@@ -32,6 +37,9 @@ const HomeScreen = ({ history, location }) => {
   } = timerSetState;
   const activeTimerState = useSelector((state) => state.activeTimerState);
   const { activeTimer } = activeTimerState;
+  const toggleShowUpdateTimerSetMain = useSelector(
+    (state) => state.toggleShowUpdateTimerSetMainState.show
+  );
 
   const searchParams = new URLSearchParams(location.search);
   const keyParams = searchParams.get("key");
@@ -75,8 +83,18 @@ const HomeScreen = ({ history, location }) => {
     <div>
       {timerSet && timerSet.name && (
         <div className="d-flex justify-content-between align-items-center">
-          <h4>{`${timerSet.name} (${timerSet.desc})`}</h4>
+          <div className="d-flex align-items-center">
+            <h4 className="mb-0">{`${timerSet.name} (${timerSet.desc})`}</h4>
+            <span
+              className="align-self-center ml-2 text-info edit-timerset-icon"
+              title="Edit"
+              onClick={() => dispatch(showUpdateTimerSetMainModal(timerSet))}
+            >
+              <i className="far fa-edit "></i>
+            </span>
+          </div>
           <p className="text-primary">Timer Key: {timerSet.key}</p>
+          {toggleShowUpdateTimerSetMain && <UpdateTimerSet />}
         </div>
       )}
       {activeTimer ? (

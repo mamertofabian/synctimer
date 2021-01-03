@@ -125,15 +125,22 @@ export const resetAddTimerSet = () => {
   };
 };
 
-export const showUpdateTimerSetMainModal = () => {
+export const showUpdateTimerSetMainModal = (timerSet) => {
   return {
     type: c.SHOW_UPDATE_TIMERSET_MAIN,
+    payload: timerSet,
   };
 };
 
 export const hideUpdateTimerSetMainModal = () => {
   return {
     type: c.HIDE_UPDATE_TIMERSET_MAIN,
+  };
+};
+
+export const resetUpdateTimerSet = () => {
+  return {
+    type: c.UPDATE_TIMERSET_RESET,
   };
 };
 
@@ -205,6 +212,63 @@ export const saveTimerSet = (timerSet) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: c.SAVE_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateTimerSet = (timerSet) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.UPDATE_TIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/save`,
+      {
+        timerSet,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.UPDATE_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.UPDATE_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.UPDATE_TIMERSET_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data.message

@@ -127,6 +127,30 @@ export const saveTimerSetReducer = (state = {}, action) => {
   }
 };
 
+export const updateTimerSetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.UPDATE_TIMERSET_REQUEST:
+      return { loading: true, loaded: false };
+    case c.UPDATE_TIMERSET_SUCCESS:
+      return {
+        loading: false,
+        loaded: true,
+        updatedTimerSet: action.payload,
+      };
+    case c.UPDATE_TIMERSET_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case c.UPDATE_TIMERSET_RESET:
+      return {
+        updatedTimerSet: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
 export const deleteTimerSetReducer = (state = {}, action) => {
   switch (action.type) {
     case c.DELETE_TIMERSET_REQUEST:
