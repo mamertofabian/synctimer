@@ -175,33 +175,33 @@ export const deleteTimerSetReducer = (state = {}, action) => {
   }
 };
 
-export const toggleShowAddTimerSetMainReducer = (state = false, action) => {
+export const toggleShowAddTimerSetReducer = (state = false, action) => {
   switch (action.type) {
-    case c.SHOW_ADD_TIMERSET_MAIN:
+    case c.SHOW_ADD_TIMERSET:
       return { show: true };
-    case c.HIDE_ADD_TIMERSET_MAIN:
+    case c.HIDE_ADD_TIMERSET:
       return { show: false };
     default:
       return state;
   }
 };
 
-export const toggleShowUpdateTimerSetMainReducer = (state = false, action) => {
+export const toggleShowUpdateTimerSetReducer = (state = false, action) => {
   switch (action.type) {
-    case c.SHOW_UPDATE_TIMERSET_MAIN:
+    case c.SHOW_UPDATE_TIMERSET:
       return { show: true, timerSet: action.payload };
-    case c.HIDE_UPDATE_TIMERSET_MAIN:
+    case c.HIDE_UPDATE_TIMERSET:
       return { show: false };
     default:
       return state;
   }
 };
 
-export const toggleShowDeleteTimerSetMainReducer = (state = false, action) => {
+export const toggleShowDeleteTimerSetReducer = (state = false, action) => {
   switch (action.type) {
-    case c.SHOW_DELETE_TIMERSET_MAIN:
+    case c.SHOW_DELETE_TIMERSET:
       return { show: true, timerSet: action.payload };
-    case c.HIDE_DELETE_TIMERSET_MAIN:
+    case c.HIDE_DELETE_TIMERSET:
       return { show: false };
     default:
       return state;
@@ -217,6 +217,111 @@ export const activeTimerReducer = (state = {}, action) => {
     case c.DEACTIVATE_TIMER:
       return {
         activeTimer: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
+export const toggleShowAddTimerReducer = (state = false, action) => {
+  switch (action.type) {
+    case c.SHOW_ADD_TIMER:
+      return { show: true };
+    case c.HIDE_ADD_TIMER:
+      return { show: false };
+    default:
+      return state;
+  }
+};
+
+export const toggleShowUpdateTimerReducer = (state = false, action) => {
+  switch (action.type) {
+    case c.SHOW_UPDATE_TIMER:
+      return { show: true, timerSet: action.payload };
+    case c.HIDE_UPDATE_TIMER:
+      return { show: false };
+    default:
+      return state;
+  }
+};
+
+export const toggleShowDeleteTimerReducer = (state = false, action) => {
+  switch (action.type) {
+    case c.SHOW_DELETE_TIMER:
+      return { show: true, timer: action.payload };
+    case c.HIDE_DELETE_TIMER:
+      return { show: false };
+    default:
+      return state;
+  }
+};
+
+export const saveTimerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.SAVE_TIMER_REQUEST:
+      return { loading: true, loaded: false };
+    case c.SAVE_TIMER_SUCCESS:
+      return {
+        loading: false,
+        loaded: true,
+        newTimer: action.payload,
+      };
+    case c.SAVE_TIMER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case c.SAVE_TIMER_RESET:
+      return {
+        newTimer: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateTimerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.UPDATE_TIMER_REQUEST:
+      return { loading: true, loaded: false };
+    case c.UPDATE_TIMER_SUCCESS:
+      return {
+        loading: false,
+        loaded: true,
+        updatedTimer: action.payload,
+      };
+    case c.UPDATE_TIMER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case c.UPDATE_TIMER_RESET:
+      return {
+        updatedTimer: undefined,
+      };
+    default:
+      return state;
+  }
+};
+
+export const deleteTimerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case c.DELETE_TIMER_REQUEST:
+      return { deleting: true, deleted: false };
+    case c.DELETE_TIMER_SUCCESS:
+      return {
+        deleting: false,
+        deleted: true,
+        deletedTimerId: action.payload,
+      };
+    case c.DELETE_TIMER_FAIL:
+      return {
+        deleting: false,
+        error: action.payload,
+      };
+    case c.DELETE_TIMER_RESET:
+      return {
+        deletedTimerId: undefined,
       };
     default:
       return state;

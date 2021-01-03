@@ -60,13 +60,34 @@ const Timer = ({ timerSetKey, t, activeTimerId }) => {
             <i className="far fa-play-circle"></i> Start
           </Button>
           <Button
+            className="ml-2"
+            variant="info"
+            title="Edit"
+            onClick={() => {
+              // history.push(`/edit?key=${s.key}`);
+            }}
+          >
+            <i className="far fa-edit"></i>
+          </Button>
+          <Button
+            className="ml-2"
+            variant="danger"
+            title="Delete"
+            // disabled={t.ended || !t.started}
+            onClick={() => {
+              // dispatch(showDeleteTimerSetModal(s));
+            }}
+          >
+            <i className="far fa-trash-alt"></i>
+          </Button>
+          {/* <Button
             className="ml-3"
             variant="warning"
             disabled={t.ended || !t.started}
             onClick={() => dispatch(stopTimer(timerSetKey, t._id))}
           >
             <i className="far fa-stop-circle"></i> Stop
-          </Button>
+          </Button> */}
         </div>
       )}
     </ListGroup.Item>

@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, ListGroup } from "react-bootstrap";
 
 import Timer from "./Timer";
-import { clearTimerSet, resetTimerSet } from "../actions/timerSetActions";
+import {
+  clearTimerSet,
+  resetTimerSet,
+  showAddTimerModal,
+} from "../actions/timerSetActions";
+import AddTimer from "./AddTimer/AddTimer";
 
 const TimerList = ({ history }) => {
   const dispatch = useDispatch();
@@ -16,6 +21,9 @@ const TimerList = ({ history }) => {
     loaded: timerSetLoaded,
     error: timerSetError,
   } = timerSetState;
+  const toggleShowAddTimer = useSelector(
+    (state) => state.toggleShowAddTimerState.show
+  );
 
   return (
     <div>
@@ -30,6 +38,14 @@ const TimerList = ({ history }) => {
             />
           );
         })}
+        <ListGroup.Item as="li">
+          <Button
+            variant="success"
+            onClick={() => dispatch(showAddTimerModal())}
+          >
+            <i className="far fa-plus-square"></i> Add New Timer
+          </Button>
+        </ListGroup.Item>
       </ListGroup>
       <ListGroup as="ul">
         <ListGroup.Item as="li" active>
@@ -64,6 +80,7 @@ const TimerList = ({ history }) => {
           </Button>
         </div>
       )}
+      {toggleShowAddTimer && <AddTimer />}
     </div>
   );
 };

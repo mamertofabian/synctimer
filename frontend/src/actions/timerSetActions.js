@@ -107,15 +107,15 @@ export const getTimerSet = (key) => async (dispatch, getState) => {
   }
 };
 
-export const showAddTimerSetMainModal = () => {
+export const showAddTimerSetModal = () => {
   return {
-    type: c.SHOW_ADD_TIMERSET_MAIN,
+    type: c.SHOW_ADD_TIMERSET,
   };
 };
 
-export const hideAddTimerSetMainModal = () => {
+export const hideAddTimerSetModal = () => {
   return {
-    type: c.HIDE_ADD_TIMERSET_MAIN,
+    type: c.HIDE_ADD_TIMERSET,
   };
 };
 
@@ -125,16 +125,16 @@ export const resetAddTimerSet = () => {
   };
 };
 
-export const showUpdateTimerSetMainModal = (timerSet) => {
+export const showUpdateTimerSetModal = (timerSet) => {
   return {
-    type: c.SHOW_UPDATE_TIMERSET_MAIN,
+    type: c.SHOW_UPDATE_TIMERSET,
     payload: timerSet,
   };
 };
 
-export const hideUpdateTimerSetMainModal = () => {
+export const hideUpdateTimerSetModal = () => {
   return {
-    type: c.HIDE_UPDATE_TIMERSET_MAIN,
+    type: c.HIDE_UPDATE_TIMERSET,
   };
 };
 
@@ -144,20 +144,20 @@ export const resetUpdateTimerSet = () => {
   };
 };
 
-export const showDeleteTimerSetMainModal = (timerSet) => {
+export const showDeleteTimerSetModal = (timerSet) => {
   return {
-    type: c.SHOW_DELETE_TIMERSET_MAIN,
+    type: c.SHOW_DELETE_TIMERSET,
     payload: timerSet,
   };
 };
 
-export const hideDeleteTimerSetMainModal = () => {
+export const hideDeleteTimerSetModal = () => {
   return {
-    type: c.HIDE_DELETE_TIMERSET_MAIN,
+    type: c.HIDE_DELETE_TIMERSET,
   };
 };
 
-export const resetDeleteTimerSetMain = () => {
+export const resetDeleteTimerSet = () => {
   return {
     type: c.DELETE_TIMERSET_RESET,
   };
@@ -392,6 +392,233 @@ export const clearTimerSet = () => {
   return {
     type: c.CLEAR_TIMERSET,
   };
+};
+
+export const showAddTimerModal = () => {
+  return {
+    type: c.SHOW_ADD_TIMER,
+  };
+};
+
+export const hideAddTimerModal = () => {
+  return {
+    type: c.HIDE_ADD_TIMER,
+  };
+};
+
+export const resetAddTimer = () => {
+  return {
+    type: c.SAVE_TIMER_RESET,
+  };
+};
+
+export const showUpdateTimerModal = (timerSet) => {
+  return {
+    type: c.SHOW_UPDATE_TIMER,
+    payload: timerSet,
+  };
+};
+
+export const hideUpdateTimerModal = () => {
+  return {
+    type: c.HIDE_UPDATE_TIMER,
+  };
+};
+
+export const resetUpdateTimer = () => {
+  return {
+    type: c.UPDATE_TIMER_RESET,
+  };
+};
+
+export const showDeleteTimerModal = (timerSet) => {
+  return {
+    type: c.SHOW_DELETE_TIMER,
+    payload: timerSet,
+  };
+};
+
+export const hideDeleteTimerModal = () => {
+  return {
+    type: c.HIDE_DELETE_TIMER,
+  };
+};
+
+export const resetDeleteTimer = () => {
+  return {
+    type: c.DELETE_TIMER_RESET,
+  };
+};
+
+export const saveTimer = (timerSet) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.SAVE_TIMER_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/save`,
+      {
+        timerSet,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.SAVE_TIMER_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.SAVE_TIMER_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.SAVE_TIMER_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateTimer = (timerSet) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.UPDATE_TIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/save`,
+      {
+        timerSet,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.UPDATE_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.UPDATE_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.UPDATE_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteTimer = (timerSetKey) => async (dispatch, getState) => {
+  const { userLogin } = getState();
+
+  dispatch({
+    type: c.DELETE_TIMERSET_REQUEST,
+  });
+
+  try {
+    const authorization =
+      userLogin.userInfo && userLogin.userInfo.token
+        ? `Bearer ${userLogin.userInfo.token}`
+        : "";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authorization,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/v1/timerset/delete`,
+      {
+        key: timerSetKey,
+        refreshToken: userLogin.userInfo.refreshToken,
+      },
+      config
+    );
+
+    if (data.success === true) {
+      dispatch({
+        type: c.DELETE_TIMERSET_SUCCESS,
+        payload: data.data,
+      });
+
+      if (data.token) {
+        dispatch({
+          type: USER_UPDATE_TOKEN,
+          payload: data.token,
+        });
+      }
+    } else {
+      dispatch({
+        type: c.DELETE_TIMERSET_FAIL,
+        payload: data.result.error,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: c.DELETE_TIMERSET_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };
 
 export const startTimer = (key, timerId) => async (dispatch, getState) => {

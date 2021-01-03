@@ -9,7 +9,6 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import PasswordReset from "./screens/PasswordReset";
-import EditScreen from "./screens/EditScreen";
 
 const App = () => {
   return (
@@ -23,7 +22,6 @@ const App = () => {
             <Route path="/register" component={RegisterScreen} />
             <Route path="/forgotpassword" component={ForgotPasswordScreen} />
             <Route path="/password-reset" component={PasswordReset} />
-            <Route path="/edit" component={EditScreen} />
           </Container>
         </main>
         <Footer />

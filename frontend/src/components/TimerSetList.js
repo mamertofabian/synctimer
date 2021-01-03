@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, ListGroup } from "react-bootstrap";
 import AddTimerSet from "./AddTimerSet/AddTimerSet";
 import {
-  showAddTimerSetMainModal,
-  showDeleteTimerSetMainModal,
+  showAddTimerSetModal,
+  showDeleteTimerSetModal,
 } from "../actions/timerSetActions";
 import DeleteTimerSet from "./DeleteTimerSet/DeleteTimerSet";
 
@@ -18,11 +18,11 @@ const TimerSetList = ({ history }) => {
     error: allTimerSetError,
   } = allTimerSetState;
 
-  const toggleShowAddTimerSetMain = useSelector(
-    (state) => state.toggleShowAddTimerSetMainState.show
+  const toggleShowAddTimerSet = useSelector(
+    (state) => state.toggleShowAddTimerSetState.show
   );
-  const toggleShowDeleteTimerSetMain = useSelector(
-    (state) => state.toggleShowDeleteTimerSetMainState.show
+  const toggleShowDeleteTimerSet = useSelector(
+    (state) => state.toggleShowDeleteTimerSetState.show
   );
 
   const selectHandler = (timerKey) => {
@@ -35,7 +35,13 @@ const TimerSetList = ({ history }) => {
       <ListGroup as="ul">
         {allTimerSet.map((s) => {
           return (
-            <ListGroup.Item as="li" className="timerset-li" key={s.key}>
+            <ListGroup.Item
+              as="li"
+              action
+              onClick={() => selectHandler(s.key)}
+              className="timerset-li"
+              key={s.key}
+            >
               <div className="d-flex justify-content-center align-items-center">
                 <span className="mr-3">{`${s.name} (${s.desc})`}</span>
                 <span>Key: {s.key}</span>
@@ -43,23 +49,14 @@ const TimerSetList = ({ history }) => {
               <div className="d-flex justify-content-center align-items-center">
                 <Button
                   className="ml-2"
-                  variant="primary"
-                  title="Select"
-                  // disabled={activeTimerId}
-                  onClick={() => {
-                    selectHandler(s.key);
-                  }}
-                >
-                  <i className="far fa-check-circle"></i>
-                </Button>
-                <Button
-                  className="ml-2"
                   variant="secondary"
                   title="Clone"
                   // disabled={activeTimerId}
-                  onClick={() => {
+                  onClick={(e) => {
                     // dispatch(startTimer(timerSetKey, t._id));
                     // history.push(`/timer?key=${timerSetKey}`);
+                    e.stopPropagation();
+                    e.preventDefault();
                     alert("Under construction");
                   }}
                 >
@@ -67,21 +64,13 @@ const TimerSetList = ({ history }) => {
                 </Button>
                 <Button
                   className="ml-2"
-                  variant="info"
-                  title="Edit"
-                  onClick={() => {
-                    history.push(`/edit?key=${s.key}`);
-                  }}
-                >
-                  <i className="far fa-edit"></i>
-                </Button>
-                <Button
-                  className="ml-2"
                   variant="danger"
                   title="Delete"
                   // disabled={t.ended || !t.started}
-                  onClick={() => {
-                    dispatch(showDeleteTimerSetMainModal(s));
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    dispatch(showDeleteTimerSetModal(s));
                   }}
                 >
                   <i className="far fa-trash-alt"></i>
@@ -97,12 +86,12 @@ const TimerSetList = ({ history }) => {
         type="submit"
         className="mr-3"
         disabled={allTimerSetLoading}
-        onClick={() => dispatch(showAddTimerSetMainModal())}
+        onClick={() => dispatch(showAddTimerSetModal())}
       >
-        Create new Timer Set
+        <i className="far fa-plus-square"></i> Create new Timer Set
       </Button>
-      {toggleShowAddTimerSetMain && <AddTimerSet />}
-      {toggleShowDeleteTimerSetMain && <DeleteTimerSet />}
+      {toggleShowAddTimerSet && <AddTimerSet />}
+      {toggleShowDeleteTimerSet && <DeleteTimerSet />}
     </div>
   );
 };

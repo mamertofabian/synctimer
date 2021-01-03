@@ -7,7 +7,7 @@ import { Button, Form } from "react-bootstrap";
 import {
   getAllTimerSets,
   getTimerSet,
-  hideUpdateTimerSetMainModal,
+  hideUpdateTimerSetModal,
   resetUpdateTimerSet,
   updateTimerSet,
 } from "../../actions/timerSetActions";
@@ -16,10 +16,10 @@ import "./UpdateTimerSet.css";
 
 const UpdateTimerSet = () => {
   const dispatch = useDispatch();
-  const toggleShowUpdateTimerSetMainState = useSelector(
-    (state) => state.toggleShowUpdateTimerSetMainState
+  const toggleShowUpdateTimerSetState = useSelector(
+    (state) => state.toggleShowUpdateTimerSetState
   );
-  const { timerSet } = toggleShowUpdateTimerSetMainState;
+  const { timerSet } = toggleShowUpdateTimerSetState;
   const updateTimerSetState = useSelector((state) => state.updateTimerSetState);
   const { updatedTimerSet, updating, updated, error } = updateTimerSetState;
 
@@ -29,7 +29,7 @@ const UpdateTimerSet = () => {
 
   useEffect(() => {
     if (updatedTimerSet) {
-      dispatch(hideUpdateTimerSetMainModal());
+      dispatch(hideUpdateTimerSetModal());
       dispatch(getTimerSet(updatedTimerSet.key));
       dispatch(getAllTimerSets());
       dispatch(resetUpdateTimerSet());
@@ -133,7 +133,7 @@ const UpdateTimerSet = () => {
               className="mt-3 ml-3"
               disabled={updating}
               onClick={() => {
-                dispatch(hideUpdateTimerSetMainModal());
+                dispatch(hideUpdateTimerSetModal());
               }}
             >
               <i className="fas fa-ban"></i> Cancel

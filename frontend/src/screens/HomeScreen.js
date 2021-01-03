@@ -7,7 +7,7 @@ import Message from "../components/Message";
 import {
   getAllTimerSets,
   getTimerSet,
-  showUpdateTimerSetMainModal,
+  showUpdateTimerSetModal,
 } from "../actions/timerSetActions";
 import ActiveTimer from "../components/ActiveTimer";
 import { logout } from "../actions/userActions";
@@ -37,8 +37,8 @@ const HomeScreen = ({ history, location }) => {
   } = timerSetState;
   const activeTimerState = useSelector((state) => state.activeTimerState);
   const { activeTimer } = activeTimerState;
-  const toggleShowUpdateTimerSetMain = useSelector(
-    (state) => state.toggleShowUpdateTimerSetMainState.show
+  const toggleShowUpdateTimerSet = useSelector(
+    (state) => state.toggleShowUpdateTimerSetState.show
   );
 
   const searchParams = new URLSearchParams(location.search);
@@ -85,16 +85,18 @@ const HomeScreen = ({ history, location }) => {
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <h4 className="mb-0">{`${timerSet.name} (${timerSet.desc})`}</h4>
-            <span
-              className="align-self-center ml-2 text-info edit-timerset-icon"
-              title="Edit"
-              onClick={() => dispatch(showUpdateTimerSetMainModal(timerSet))}
-            >
-              <i className="far fa-edit "></i>
-            </span>
+            {userInfo && userInfo.user === timerSet.user && (
+              <span
+                className="align-self-center ml-2 text-info edit-timerset-icon"
+                title="Edit"
+                onClick={() => dispatch(showUpdateTimerSetModal(timerSet))}
+              >
+                <i className="far fa-edit "></i>
+              </span>
+            )}
           </div>
           <p className="text-primary">Timer Key: {timerSet.key}</p>
-          {toggleShowUpdateTimerSetMain && <UpdateTimerSet />}
+          {toggleShowUpdateTimerSet && <UpdateTimerSet />}
         </div>
       )}
       {activeTimer ? (

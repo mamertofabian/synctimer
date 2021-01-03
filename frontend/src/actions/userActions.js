@@ -45,6 +45,7 @@ export const login = (email, password) => async (dispatch) => {
         email: data.data.email,
         token: data.data.token,
         refreshToken: data.data.refreshToken,
+        user: data.data._id,
       };
       dispatch({ type: USER_LOGIN_SUCCESS, payload: payload });
       dispatch(resetPasswordReset());
@@ -106,6 +107,7 @@ export const register = (name, email, password) => async (dispatch) => {
         isAdmin: data.data.isAdmin,
         token: data.data.token,
         refreshToken: data.data.refreshToken,
+        user: data.data._id,
       };
 
       dispatch({ type: USER_REGISTER_SUCCESS, payload: payload });

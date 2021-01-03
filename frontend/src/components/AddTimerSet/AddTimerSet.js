@@ -7,7 +7,7 @@ import "./AddTimerSet.css";
 import { Button, Form } from "react-bootstrap";
 import {
   getAllTimerSets,
-  hideAddTimerSetMainModal,
+  hideAddTimerSetModal,
   resetAddTimerSet,
   saveTimerSet,
 } from "../../actions/timerSetActions";
@@ -24,7 +24,7 @@ const AddTimerSet = () => {
 
   useEffect(() => {
     if (newTimerSet) {
-      dispatch(hideAddTimerSetMainModal());
+      dispatch(hideAddTimerSetModal());
       dispatch(resetAddTimerSet());
       dispatch(getAllTimerSets());
     }
@@ -97,7 +97,7 @@ const AddTimerSet = () => {
               value={formik.values.timerSetDesc}
             />
           </Form.Group>
-          <Form.Group controlId="timerSetDesc">
+          <Form.Group controlId="timeBudget">
             <Form.Control
               type="text"
               placeholder="Time budget in minutes"
@@ -125,7 +125,7 @@ const AddTimerSet = () => {
               className="mt-3 ml-3"
               disabled={loading}
               onClick={() => {
-                dispatch(hideAddTimerSetMainModal());
+                dispatch(hideAddTimerSetModal());
               }}
             >
               <i className="fas fa-ban"></i> Cancel

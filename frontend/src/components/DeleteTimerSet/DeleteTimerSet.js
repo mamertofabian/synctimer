@@ -4,25 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteTimerSet,
   getAllTimerSets,
-  hideDeleteTimerSetMainModal,
-  resetDeleteTimerSetMain,
+  hideDeleteTimerSetModal,
+  resetDeleteTimerSet,
 } from "../../actions/timerSetActions";
 
 import "./DeleteTimerSet.css";
 
 const DeleteTimerSet = () => {
   const dispatch = useDispatch();
-  const toggleShowDeleteTimerSetMainState = useSelector(
-    (state) => state.toggleShowDeleteTimerSetMainState
+  const toggleShowDeleteTimerSetState = useSelector(
+    (state) => state.toggleShowDeleteTimerSetState
   );
-  const { timerSet } = toggleShowDeleteTimerSetMainState;
+  const { timerSet } = toggleShowDeleteTimerSetState;
   const deleteTimerSetState = useSelector((state) => state.deleteTimerSetState);
   const { deletedTimerSetKey, deleting, deleted, error } = deleteTimerSetState;
 
   useEffect(() => {
     if (deletedTimerSetKey) {
-      dispatch(hideDeleteTimerSetMainModal());
-      dispatch(resetDeleteTimerSetMain());
+      dispatch(hideDeleteTimerSetModal());
+      dispatch(resetDeleteTimerSet());
       dispatch(getAllTimerSets());
     }
   }, [dispatch, deletedTimerSetKey]);
@@ -46,7 +46,7 @@ const DeleteTimerSet = () => {
             className="mt-3 ml-3"
             disabled={deleting}
             onClick={() => {
-              dispatch(hideDeleteTimerSetMainModal());
+              dispatch(hideDeleteTimerSetModal());
             }}
           >
             <i className="far fa-times-circle"></i> No
