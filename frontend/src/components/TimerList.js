@@ -80,8 +80,7 @@ const TimerList = ({ history }) => {
             variant="info"
             className="mt-3"
             onClick={() => {
-              dispatch(clearTimerSet());
-              history.push("/");
+              window.location.assign("/");
             }}
           >
             <i className="fas fa-list"></i> Select another timer set

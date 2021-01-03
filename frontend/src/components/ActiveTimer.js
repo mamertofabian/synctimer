@@ -42,7 +42,7 @@ const ActiveTimer = () => {
             />
           </div>
           <h3 className="text-center">{activeTimer.name}</h3>
-          {userInfo && userInfo.email && (
+          {userInfo && userInfo.user === timerSet.user && (
             <div>
               <Button
                 variant="warning"

@@ -57,6 +57,8 @@ const HomeScreen = ({ history, location }) => {
   useEffect(() => {
     if (
       timerSetLoaded &&
+      timerSet &&
+      key &&
       (!userInfo || (userInfo && userInfo.user !== timerSet.user))
     ) {
       setTimeout(() => {

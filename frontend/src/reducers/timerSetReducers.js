@@ -96,6 +96,7 @@ export const getTimerSetReducer = (state = {}, action) => {
     case c.CLEAR_TIMERSET:
       return {
         loading: false,
+        loaded: false,
         timerSet: undefined,
       };
     default:
