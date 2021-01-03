@@ -6,7 +6,6 @@ import {
   showDeleteTimerModal,
   showUpdateTimerModal,
   startTimer,
-  stopTimer,
 } from "../actions/timerSetActions";
 
 const Timer = ({ timerSetKey, t, timerSet, activeTimerId }) => {

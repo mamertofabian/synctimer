@@ -28,12 +28,10 @@ const HomeScreen = ({ history, location }) => {
     allTimerSet,
     loading: allTimerSetLoading,
     loaded: allTimerSetLoaded,
-    error: allTimerSetError,
   } = allTimerSetState;
   const timerSetState = useSelector((state) => state.timerSetState);
   const {
     timerSet,
-    loading: timerSetLoading,
     loaded: timerSetLoaded,
     error: timerSetError,
   } = timerSetState;

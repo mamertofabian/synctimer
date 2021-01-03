@@ -17,12 +17,7 @@ const TimerList = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const timerSetState = useSelector((state) => state.timerSetState);
-  const {
-    timerSet,
-    loading: timerSetLoading,
-    loaded: timerSetLoaded,
-    error: timerSetError,
-  } = timerSetState;
+  const { timerSet } = timerSetState;
   const toggleShowAddTimer = useSelector(
     (state) => state.toggleShowAddTimerState.show
   );
