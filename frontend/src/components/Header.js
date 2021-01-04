@@ -40,8 +40,8 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               <Nav.Link
-                href="https://codingwitness.com/?p=341"
-                target="codingwitness"
+                href="https://codefrost.io/how-to-use-synctimer/"
+                target="codefrost"
               >
                 <i className="fas fa-question-circle"></i> How to Use
               </Nav.Link>

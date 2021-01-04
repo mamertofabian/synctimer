@@ -207,7 +207,7 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   // const resetUrl = `${req.protocol}://${req.get(
   //   "host"
   // )}/api/v1/auth/resetpassword/${resetToken}`;
-  const resetUrl = `https://synctimer.codingwitness.com/password-reset/?resettoken=${resetToken}`;
+  const resetUrl = `https://synctimer.codefrost.io/password-reset/?resettoken=${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requested to reset your password. Please follow this link to continue: \n\n ${resetUrl}`;
 
