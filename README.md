@@ -6,6 +6,7 @@
 3. Create own set of timers
 4. Edit timer on the fly
 5. Security: Only the owner of the timer set can manage it.
+6. Clone Timer Set
 
 # Coming Soon
 1. Option to show idle timer (in-between comments)
