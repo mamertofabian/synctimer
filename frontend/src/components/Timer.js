@@ -61,7 +61,7 @@ const Timer = ({ timerSetKey, t, timerSet, activeTimerId }) => {
               // history.push(`/timer?key=${timerSetKey}`);
             }}
           >
-            <i className="far fa-play-circle"></i> Start
+            <i className="far fa-play-circle"></i>
           </Button>
           <Button
             className="ml-2"

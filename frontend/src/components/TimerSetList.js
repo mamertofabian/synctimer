@@ -67,7 +67,7 @@ const TimerSetList = ({ history }) => {
                     dispatch(cloneTimerSet(s));
                   }}
                 >
-                  <i className="far fa-clone"></i> Clone
+                  <i className="far fa-clone"></i>
                 </Button>
                 <Button
                   className="ml-2"
