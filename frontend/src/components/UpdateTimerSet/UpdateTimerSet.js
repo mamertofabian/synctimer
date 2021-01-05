@@ -72,7 +72,7 @@ const UpdateTimerSet = () => {
   return (
     <div className="updatetimerset-container">
       <div className="updatetimerset-content">
-        <h5>Add new Timer Set</h5>
+        <h5>Update Timer Set</h5>
         <hr />
         <Form noValidate onSubmit={formik.handleSubmit}>
           <Form.Group controlId="timerSetName">
