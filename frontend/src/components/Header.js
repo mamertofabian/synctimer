@@ -34,11 +34,11 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <LinkContainer to="/">
+              {/*<LinkContainer to="/">
                 <Nav.Link>
                   <i className="fas fa-home"></i> Home
                 </Nav.Link>
-              </LinkContainer>
+                </LinkContainer> */}
               <Nav.Link
                 href="https://codefrost.io/how-to-use-synctimer/"
                 target="codefrost"
