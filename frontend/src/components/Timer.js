@@ -52,7 +52,7 @@ const Timer = ({ timerSetKey, t, timerSet, activeTimerId }) => {
         )}
       </div>
       {userInfo && userInfo.user === timerSet.user && (
-        <div className="d-flex justify-content-center align-items-center">
+        <div className="d-flex justify-content-center align-items-center d-print-none">
           <Button
             className="ml-3"
             disabled={activeTimerId}

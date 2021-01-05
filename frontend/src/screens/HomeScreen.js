@@ -92,7 +92,7 @@ const HomeScreen = ({ history, location }) => {
             <h4 className="mb-0">{`${timerSet.name} (${timerSet.desc})`}</h4>
             {userInfo && userInfo.user === timerSet.user && (
               <span
-                className="align-self-center ml-2 text-info edit-timerset-icon"
+                className="align-self-center ml-2 text-info edit-timerset-icon d-print-none"
                 title="Edit"
                 onClick={() => dispatch(showUpdateTimerSetModal(timerSet))}
               >
@@ -103,7 +103,7 @@ const HomeScreen = ({ history, location }) => {
           <div className="d-flex align-items-center">
             <p className="text-primary mb-0">Timer Key: {timerSet.key}</p>
             <span
-              className="align-self-center ml-2 text-info edit-timerset-icon"
+              className="align-self-center ml-2 text-info edit-timerset-icon d-print-none"
               title="Copy share link"
               ref={copyTarget}
               onClick={() => {
