@@ -12,6 +12,8 @@ import {
 import AddTimer from "./AddTimer/AddTimer";
 import UpdateTimer from "./UpdateTimer/UpdateTimer";
 import DeleteTimer from "./DeleteTimer/DeleteTimer";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const TimerList = ({ history }) => {
   const dispatch = useDispatch();
@@ -28,6 +30,27 @@ const TimerList = ({ history }) => {
   const toggleShowDeleteTimer = useSelector(
     (state) => state.toggleShowDeleteTimerState.show
   );
+  const [lastStoppedTimer, setLastStoppedTimer] = useState(null);
+
+  useEffect(() => {
+    const endedTimers = timerSet.timers.filter((t) => t.ended);
+    let lastTimer;
+    if (endedTimers) {
+      console.log({ endedTimers });
+      for (let i = 0; i < endedTimers.length; i++) {
+        const t = endedTimers[i];
+        if (!lastTimer) {
+          lastTimer = t;
+        } else {
+          if (t.ended > lastTimer.ended) {
+            lastTimer = t;
+          }
+        }
+      }
+    }
+    console.log("getLastStoppedTimer", lastTimer && lastTimer.name);
+    setLastStoppedTimer(lastTimer);
+  }, [timerSet]);
 
   const formatDuration = (durationMs) => {
     const date = new Date(0);
@@ -72,14 +95,16 @@ const TimerList = ({ history }) => {
   return (
     <div>
       <ListGroup as="ul">
-        {timerSet.timers.map((t) => {
+        {timerSet.timers.map((t, index) => {
           return (
             <Timer
               timerSetKey={timerSet.key}
               t={t}
               timerSet={timerSet}
               key={t._id}
+              nextTimer={timerSet.timers[index + 1]}
               activeTimerId={timerSet.activeTimerId}
+              lastStoppedTimer={lastStoppedTimer}
             />
           );
         })}

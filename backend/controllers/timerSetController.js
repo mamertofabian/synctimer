@@ -129,7 +129,7 @@ const startTimer = asyncHandler(async (req, res) => {
       if (timer.ended) {
         timer.ended = undefined;
       }
-      timer.started = Date.now();
+      timer.started = new Date(Date.now()).toISOString();
       timerSet.activeTimerId = timer._id.toString();
       await TimerSet.updateOne({ key: timerSet.key }, timerSet);
 
@@ -164,7 +164,7 @@ const stopTimer = asyncHandler(async (req, res) => {
         throw new Error("Timer already ended");
       }
 
-      timer.ended = Date.now();
+      timer.ended = new Date(Date.now()).toISOString();
       timerSet.activeTimerId = undefined;
       await TimerSet.updateOne({ key: timerSet.key }, timerSet);
 
